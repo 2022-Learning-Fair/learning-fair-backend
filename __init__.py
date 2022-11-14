@@ -51,13 +51,12 @@ def login():
         sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type, user_token) VALUES (%s, %s, %s, %s, %s, %s)"
 
         user_json = request.get_json()
-        
+    
         Student_ID = user_json['studentId']
         User_name = user_json['name']
         User_major = user_json['major']
         User_login_time = datetime.datetime.now()
         User_type = user_json['userType']
-
         User_token = secrets.token_hex(nbytes=32)
 
         conn = pymysql.connect(host=os.environ.get('DB_URL'),
@@ -75,11 +74,8 @@ def login():
         with conn.cursor() as cur:
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
-
-        print(user_id_db_result)
-
-        session['User_token'] = user_id_db_result[0][0]
-
+        session['User_id'] = user_id_db_result[0][0]
+        print(user_id_db_result[0][0])
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
 
@@ -275,7 +271,10 @@ def likes_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT EXISTS(SELECT * FROM like_table WHERE project_id = {pj_id} AND user_id = {us_id}) AS t"""
+    likesql = f"""SELECT EXISTS(SELECT * FROM like_table
+                  WHERE project_id = {pj_id} AND
+                  user_id = {us_id}) AS t"""
+                  
     with conn.cursor() as cur:
         cur.execute(likesql)
         like_button = cur.fetchall()
@@ -293,20 +292,26 @@ def likes_project(pj_id):
                    (user_id, project_id) VALUES
                    ({us_id}, {pj_id})
                    """
-        likesql = f"""SELECT EXISTS(
-                   SELECT * FROM like_table
-                   WHERE user_id = {us_id} AND
-                   project_id = {pj_id}) AS t"""
-    
+        likecnts = f"""
+                   SELECT like_cnt
+                   FROM project
+                   where project_id = {pj_id}
+                   """
+                   
         with conn.cursor() as cur:
             cur.execute(likeup)
-            cur.execute(likesql)
             cur.execute(liketable)
-            like_data = cur.fetchall()
             conn.commit()
-        print(session['User_name'])
-        print('님이 좋아요를 눌렀어요')   
-        return jsonify({'msg': '좋아요 완료!'})
+            
+        with conn.cursor() as cur:
+            cur.execute(likecnts)
+            like_data = cur.fetchall()
+            like_data = like_data[0][0]
+            conn.commit()
+        like_button = 1
+        like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+        
+        return jsonify(like_info_json)
     
     else :
         likeup= f"""
@@ -326,12 +331,18 @@ def likes_project(pj_id):
                    """
         with conn.cursor() as cur:
             cur.execute(likeup)
-            cur.execute(likecnts)
             cur.execute(liketable)
-            like_data = cur.fetchall()
             conn.commit()
-        print(like_data)
-        return jsonify({'msg': '좋아요 취소!'})
+        
+        with conn.cursor() as cur:
+            cur.execute(likecnts)
+            like_data = cur.fetchall()
+            like_data = like_data[0][0]
+            conn.commit()
+        like_button = -1
+        like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+        
+        return jsonify(like_info_json)
 
 @app.route('/logout')
 def logout():
