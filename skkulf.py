@@ -87,7 +87,7 @@ def session_check():
     session_check_json = request.get_json()
 
     if session_check_json['token'] in session:
-        return jsonify({"session":"active"})
+        return jsonify({"session":"active", "User_name":session['User_name']})
     else:
         return jsonify({"session":"deactive"})
 
