@@ -308,7 +308,7 @@ def likes_project(pj_id):
             like_data = cur.fetchall()
             like_data = like_data[0][0]
             conn.commit()
-        like_button = 1
+        like_button = True
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
         return jsonify(like_info_json)
@@ -339,7 +339,7 @@ def likes_project(pj_id):
             like_data = cur.fetchall()
             like_data = like_data[0][0]
             conn.commit()
-        like_button = -1
+        like_button = False
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
         return jsonify(like_info_json)
