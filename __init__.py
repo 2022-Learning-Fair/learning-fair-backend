@@ -78,7 +78,7 @@ def login():
 
         print(user_id_db_result)
 
-        session[User_token] = user_id_db_result[0][0]
+        session['User_token'] = user_id_db_result[0][0]
 
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
@@ -268,44 +268,57 @@ def project(id):
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
 @app.route('/project/<int:pj_id>/like')
-def like_project(pj_id):
+def likes_project(pj_id):
+    us_id = session['User_id']
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT 1 FROM like_table WHERE project_id = {pj_id} AND user_id = {session['User_id']}"""
+    likesql = f"""SELECT EXISTS(SELECT * FROM like_table WHERE project_id = {pj_id} AND user_id = {us_id}) AS t"""
     with conn.cursor() as cur:
         cur.execute(likesql)
-    like_button = cur.fetchall()
-    like_button = like_button[0][0]
-    
-    if like_button == 1:
-        likeup= f"""
-                UPDATE project
-                set like_cnt = like_cnt - 1
-                where project_id = {pj_id}
-                """
-        likecnts = f"""
-                   SELECT like_cnt
-                   FROM project
-                   where project_id = {pj_id}
-                   """
-        with conn.cursor() as cur:
-            cur.execute(likeup)
-            cur.execute(likecnts)
-            like_data = cur.fetchall()
-            conn.commit()
-        print(like_data[0][0])    
-        like_button = 1
-        return jsonify({"like_cnt": like_data[0][0]})
-    
-    else :
+        like_button = cur.fetchall()
+        like_button = like_button[0][0]
+        conn.commit()
+        
+    if like_button == 0:
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt + 1
                 where project_id = {pj_id}
                 """
+        liketable= f"""
+                   INSERT into like_table
+                   (user_id, project_id) VALUES
+                   ({us_id}, {pj_id})
+                   """
+        likesql = f"""SELECT EXISTS(
+                   SELECT * FROM like_table
+                   WHERE user_id = {us_id} AND
+                   project_id = {pj_id}) AS t"""
+    
+        with conn.cursor() as cur:
+            cur.execute(likeup)
+            cur.execute(likesql)
+            cur.execute(liketable)
+            like_data = cur.fetchall()
+            conn.commit()
+        print(session['User_name'])
+        print('님이 좋아요를 눌렀어요')   
+        return jsonify({'msg': '좋아요 완료!'})
+    
+    else :
+        likeup= f"""
+                UPDATE project
+                set like_cnt = like_cnt - 1
+                where project_id = {pj_id}
+                """
+        liketable= f"""
+                   DELETE from like_table
+                   WHERE user_id = {us_id}
+                   AND project_id = {pj_id}
+                   """
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
@@ -314,13 +327,11 @@ def like_project(pj_id):
         with conn.cursor() as cur:
             cur.execute(likeup)
             cur.execute(likecnts)
+            cur.execute(liketable)
             like_data = cur.fetchall()
             conn.commit()
-        print(like_data[0][0])    
-        like_button = 0
-        return jsonify({"like_cnt": like_data[0][0]})
-    
-
+        print(like_data)
+        return jsonify({'msg': '좋아요 취소!'})
 
 @app.route('/logout')
 def logout():

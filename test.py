@@ -261,7 +261,6 @@ def likes_project(pj_id):
             cur.execute(liketable)
             like_data = cur.fetchall()
             conn.commit()
-        print(like_data[0][0], '\n') 
         print(session['User_name'])
         print('님이 좋아요를 눌렀어요')   
         return jsonify({'msg': '좋아요 완료!'})
@@ -273,7 +272,9 @@ def likes_project(pj_id):
                 where project_id = {pj_id}
                 """
         liketable= f"""
-                   DELETE table like_table WHERE user_id = {us_id} AND project_id = {pj_id})
+                   DELETE from like_table
+                   WHERE user_id = {us_id}
+                   AND project_id = {pj_id}
                    """
         likecnts = f"""
                    SELECT like_cnt
@@ -285,8 +286,8 @@ def likes_project(pj_id):
             cur.execute(likecnts)
             cur.execute(liketable)
             like_data = cur.fetchall()
-        print(like_data)    
-        like_button = 0
+            conn.commit()
+        print(like_data)
         return jsonify({'msg': '좋아요 취소!'})
 
 @app.route('/projects/<int:pj_id>/like')
