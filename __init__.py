@@ -74,7 +74,7 @@ def login():
         with conn.cursor() as cur:
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
-        session['User_id'] = user_id_db_result[0][0]
+        session[User_token] = user_id_db_result[0][0]
         print(user_id_db_result[0][0])
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
