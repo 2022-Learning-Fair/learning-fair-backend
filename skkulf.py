@@ -74,7 +74,7 @@ def login():
         with conn.cursor() as cur:
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
-        session['User_id'] = user_id_db_result[0][0]
+        session[User_token] = user_id_db_result[0][0]
         print(user_id_db_result[0][0])
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
@@ -308,7 +308,7 @@ def likes_project(pj_id):
             like_data = cur.fetchall()
             like_data = like_data[0][0]
             conn.commit()
-        like_button = 1
+        like_button = True
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
         return jsonify(like_info_json)
@@ -339,7 +339,7 @@ def likes_project(pj_id):
             like_data = cur.fetchall()
             like_data = like_data[0][0]
             conn.commit()
-        like_button = -1
+        like_button = False
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
         return jsonify(like_info_json)

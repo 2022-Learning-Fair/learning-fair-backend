@@ -39,8 +39,10 @@ const Layout = () => {
     }
   }
 
-  // console.log(localStorage.getItem('login-token'))
-  session_check_api(sessionCheckJson);
+  console.log(localStorage.getItem("login-token"));
+  useEffect(() => {
+    session_check_api(sessionCheckJson);
+  }, []);
 
   //-----------세션 체크 완료------------------
 
