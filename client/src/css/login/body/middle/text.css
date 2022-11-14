@@ -45,10 +45,10 @@
   position: absolute;
   left: 0px;
   top: 0px;
-  transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
   -webkit-transition: all 0.2s ease;
   -moz-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .textInput:focus,
