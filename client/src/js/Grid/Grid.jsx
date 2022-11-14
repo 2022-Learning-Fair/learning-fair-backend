@@ -12,7 +12,7 @@ function Grid({ project }) {
         navigate(`/project/${project.project_id}`);
       }}
     >
-      <div className="GridWrapper">
+      <div className="GridImgWrapper">
         <img
           className="GridThumbnail"
           width="280"
