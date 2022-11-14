@@ -10,10 +10,6 @@
 }
 #Switch {
   position: absolute;
-  /* hidden */
-  /* appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none; */
 }
 .SwitchLabel {
   position: relative;
@@ -51,7 +47,6 @@
   background: #a1c935;
 }
 
-/* move */
 #Switch:checked + .SwitchLabel .SwitchBtn {
   left: 34px;
   background: #fff;

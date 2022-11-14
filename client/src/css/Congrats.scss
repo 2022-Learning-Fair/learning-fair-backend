@@ -4,49 +4,49 @@
 } */
 
 .Congrats {
-    display: grid;
-    grid-template-rows: 1fr;
-    justify-content: center;
-    text-align: center;
-    background-color: #edfeedd3;
-    border-radius: 10px;
+  display: grid;
+  grid-template-rows: 1fr;
+  justify-content: center;
+  text-align: center;
+  background-color: #edfeedd3;
+  border-radius: 10px;
 }
 
-.CongratsWrapper{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* border: solid red 1px; */
-    margin: 30px 0 30px 0;
-    p{
-        font-size: 28px;
-        font-weight: 900;
-        color:#00620a;
-        letter-spacing: 0.2em;
-        margin-bottom:20px;
-    }
+.CongratsWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* border: solid red 1px; */
+  margin: 30px 0 30px 0;
+  p {
+    font-size: 28px;
+    font-weight: 900;
+    color: #00620a;
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+  }
 }
 
 .first {
-    grid-column: 1 / 3;
-    /* border: solid red 1px; */
-    margin: 0 20px 10px 20px;
-    padding-bottom: 30px;
-    border-bottom: 5px dashed #00620a;
+  grid-column: 1 / 3;
+  /* border: solid red 1px; */
+  margin: 0 20px 10px 20px;
+  padding-bottom: 30px;
+  border-bottom: 5px dashed #00620a;
 }
 
 .second {
-    /* border: 1px solid red; */
-    margin: 0;
-    padding:0 20px;
-    p{
-        padding-top:20px;
-    }
+  /* border: 1px solid red; */
+  margin: 0;
+  padding: 0 20px;
+  p {
+    padding-top: 20px;
+  }
 }
-#second{
-    border-right: 5px dashed #00620a;
+#second {
+  border-right: 5px dashed #00620a;
 }
 
-#sw{
-    margin-top: 10px;
-    margin-bottom: 35px;
+#sw {
+  margin-top: 10px;
+  margin-bottom: 35px;
 }

@@ -1,19 +1,14 @@
 .header {
-    width: auto;
-    // backdrop-filter: blur(50px);
-    // box-shadow: 10px 20px 40px #00000033;
-    padding: 10px 0px;
-    display: flex;
-    flex-flow: row wrap;
-    flex:auto;
-    justify-content: center;
-    // backdrop-filter: blur(10px);
-    // background-color: rgba(255, 255, 255, 0.13); /* 밝게 보이도록 배경색 추가 */
-    // border-radius: 10px;
-    margin: 10px 5px;
-    letter-spacing: 0.1em;
+  width: auto;
+  padding: 10px 0px;
+  display: flex;
+  flex-flow: row wrap;
+  flex: auto;
+  justify-content: center;
+  margin: 10px 5px;
+  letter-spacing: 0.1em;
 }
 
 @import url("header/headerMenu.scss");
 
-@import url("header/headerWelcome.scss")
+@import url("header/headerWelcome.scss");

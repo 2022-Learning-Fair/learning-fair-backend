@@ -1,9 +1,8 @@
-function Menu({value}) {
+function Menu({ value }) {
   return (
-    <p value={value} 
-      onClick={() => window.location.replace(`/class/${value}`)}>
+    <p value={value} onClick={() => window.location.replace(`/class/${value}`)}>
       {value}
     </p>
-  )
+  );
 }
 export default Menu;

@@ -21,7 +21,6 @@ function Grid({ project }) {
           loading="lazy"
         />
       </div>
-      {/* <p className="GridLike">{project.like_cnt}</p> */}
       <p className="GridTeam">
         [{project.team_number}] {project.team_name}
       </p>
