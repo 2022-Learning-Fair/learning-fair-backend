@@ -1,15 +1,19 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+// import Header from './Header';
+// import { Link } from 'react-router-dom';
 
 function Main() {
-    // function RequireAuth({ children, redirectTo }) {
-    //     let isAuthenticated = getAuth();
-    //     return isAuthenticated ? children : <Navigate to={redirectTo} />;
-    // }
-    // RequireAuth('/login')
-    // return (
-    //     <div className="Main">
-        
-    //     </div>
-    // );
+    return (
+        <div className="Main">
+            <Router>
+                <Routes>
+                    <Route path="/main"></Route>
+                    {/* <Route path="*" element={<NotFound />} /> */}
+                </Routes>
+            </Router>
+        </div>
+    )
 }
 
 export default Main;
