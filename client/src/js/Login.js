@@ -41,6 +41,7 @@ function Login() {
         }
       });
       localStorage.setItem("login-token", response.data.token);
+      localStorage.setItem("login-name", response.data.user_name);
       navigate("/main");
     } catch (e) {
       console.log(e);

@@ -75,7 +75,7 @@ def login():
         session[User_token] = user_id_db_result[0][0]
         session[str(user_id_db_result[0][0])] = User_name
         print(user_id_db_result[0][0])
-        return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
+        return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0], "user_name":User_name})
 
 
 
@@ -84,11 +84,10 @@ def session_check():
 
     session_check_json = request.get_json()
 
-    print(session_check_json)
-    print(session)
+    print(session_check_json['name'])
 
     if session_check_json['token'] in session:
-        return jsonify({"session":"active"})
+        return jsonify({"session":"active", "user_name":session_check_json['name']})
     else:
         return jsonify({"session":"deactive"})
 
