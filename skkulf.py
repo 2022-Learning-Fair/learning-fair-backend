@@ -19,9 +19,6 @@ app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 #테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 
-like_button = 0
-
-
 
 @app.route('/')
 def index():
@@ -75,7 +72,7 @@ def login():
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
         session[User_token] = user_id_db_result[0][0]
-        session['User_name'] = request.form['User_name']
+        session['User_name'] = User_name
         print(user_id_db_result[0][0])
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
@@ -87,7 +84,8 @@ def session_check():
 
     session_check_json = request.get_json()
 
-    print(session_check_json)
+    #print(session_check_json)
+    print(session)
 
     if session_check_json['token'] in session:
         return jsonify({"session":"active", "User_name":session['User_name']})
