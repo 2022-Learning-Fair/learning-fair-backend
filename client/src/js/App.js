@@ -9,7 +9,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />}></Route>
           <Route path="/*" element={<Layout />} />
-          <Route path="/main" element={<WordCloud />}></Route>
         </Routes>
       </Router>
     </div>

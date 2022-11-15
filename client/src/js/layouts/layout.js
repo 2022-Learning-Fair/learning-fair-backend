@@ -11,6 +11,7 @@ import Congrats from "../Congrats";
 import Tag from "../Tag";
 import Class from "../Class";
 import Project from "../Project";
+import WordCloud from "../WordCloud";
 
 const Layout = () => {
   const sessionCheckJson = {
@@ -34,12 +35,6 @@ const Layout = () => {
       if (response["data"]["session"] === "deactive") {
         console.log("You need to login in!");
         navigate("/");
-      }
-
-      else if (response["data"]["session"] === "active") {
-        console.log("You already login");
-        navigate("/main");
-
       }
 
       
