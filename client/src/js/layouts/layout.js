@@ -43,30 +43,6 @@ const Layout = () => {
     }
   }
 
-  async function login_check_api(sessionChkJson) {
-    try {
-      const response = await axios.post(
-        "/api/session-check",
-        JSON.stringify(sessionChkJson),
-        {
-          headers: {
-            "Content-Type": `application/json`
-          }
-        }
-      );
-
-      if (response["data"]["session"] === "active") {
-        console.log("You already login");
-        navigate("/main");
-      }
-
-      
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-
   console.log(localStorage.getItem("login-token"));
   useEffect(() => {
     session_check_api(sessionCheckJson);
