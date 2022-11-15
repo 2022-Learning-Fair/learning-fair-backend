@@ -148,11 +148,11 @@ def login():
         with conn.cursor() as cur:
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
-        session['User_id'] = user_id_db_result[0][0]
-        print(session['User_token'])
-        print(session['User_name'])
-        print(session['User_id'])
         
+        session[User_token] = user_id_db_result[0][0]
+        session[str(user_id_db_result[0][0])] = User_name
+        session['User_id'] = user_id_db_result[0][0]
+
         return redirect(url_for('index'))
         
 @app.route('/testid')
@@ -269,7 +269,7 @@ def likes_project(pj_id):
             like_data = cur.fetchall()
             like_data = like_data[0][0]
             conn.commit()
-        like_button = 1
+        like_button = True
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
         return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
@@ -301,7 +301,7 @@ def likes_project(pj_id):
             like_data = cur.fetchall()
             like_data = like_data[0][0]
             conn.commit()
-        like_button = -1
+        like_button = False
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
         return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
