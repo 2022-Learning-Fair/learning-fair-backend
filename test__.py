@@ -71,10 +71,11 @@ def login():
         with conn.cursor() as cur:
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
-        
-        session[User_token] = user_id_db_result[0][0]
-        session[str(user_id_db_result[0][0])] = User_name
-        print(user_id_db_result[0][0])
+        User_id = str(user_id_db_result[0][0])
+
+        session[User_token] = User_name
+        session[User_name] = User_token
+        print(session)
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
 
@@ -83,12 +84,11 @@ def login():
 def session_check():
 
     session_check_json = request.get_json()
-
-    print(session_check_json)
     print(session)
 
     if session_check_json['token'] in session:
         return jsonify({"session":"active"})
+        #return jsonify({"session":"active", 'user_name':session[str(session_check_json['token'])]})
     else:
         return jsonify({"session":"deactive"})
 
