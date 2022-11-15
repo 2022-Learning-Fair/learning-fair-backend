@@ -11,7 +11,6 @@ import Congrats from "../Congrats";
 import Tag from "../Tag";
 import Class from "../Class";
 import Project from "../Project";
-import WordCloud from "../WordCloud";
 
 const Layout = () => {
   const sessionCheckJson = {
