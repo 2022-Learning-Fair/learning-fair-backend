@@ -35,7 +35,7 @@ def index():
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/api/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET': 
         content = '''
@@ -80,11 +80,13 @@ def login():
 
 
 
-@app.route('/session-check', methods=['POST'])
+@app.route('/api/session-check', methods=['POST'])
 def session_check():
     print(session)
 
     session_check_json = request.get_json()
+
+    print(session_check_json)
 
     if session_check_json['token'] in session:
         return jsonify({"session":"active", "User_name":session['User_name']})
@@ -93,7 +95,7 @@ def session_check():
 
 
 
-@app.route('/congrats-videos')
+@app.route('/api/congrats-videos')
 def congrats_vidoes():
     #영상 업데이트 되면 url 바꿔야 함
     congrats_vidoes_json = {
@@ -106,7 +108,7 @@ def congrats_vidoes():
 
 
 
-@app.route('/project-info', methods=['POST'])
+@app.route('/api/project-info', methods=['POST'])
 def project_info():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -142,7 +144,7 @@ def project_info():
 
 
 
-@app.route('/project-layout-info', methods=['POST'])
+@app.route('/api/project-layout-info', methods=['POST'])
 def project_layout_info():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -165,7 +167,7 @@ def project_layout_info():
 
 
 
-@app.route('/class')
+@app.route('/api/class')
 def class_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -222,7 +224,7 @@ def class_list():
 
     return jsonify(class_project_list_json)
 
-@app.route('/tag')
+@app.route('/api/tag')
 def tag_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -256,14 +258,14 @@ def tag_list():
 
     return jsonify(tag_project_list_json)
 
-@app.route('/project/<int:id>')
+@app.route('/api/project/<int:id>')
 def project(id):
     Project =lfmodules.getProjects(id)
     title = Project[0][0]
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
-@app.route('/project/<int:pj_id>/like')
+@app.route('/api/project/<int:pj_id>/like')
 def likes_project(pj_id):
     us_id = session['User_id']
     conn = pymysql.connect(host=os.environ.get('DB_URL'),

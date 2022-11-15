@@ -35,7 +35,7 @@ function Login() {
 
   async function login_api(submitValue) {
     try {
-      const response = await axios.post("/login", JSON.stringify(submitValue), {
+      const response = await axios.post("/api/login", JSON.stringify(submitValue), {
         headers: {
           "Content-Type": `application/json`
         }

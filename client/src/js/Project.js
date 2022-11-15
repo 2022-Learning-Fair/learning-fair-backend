@@ -13,7 +13,7 @@ function Project() {
   async function project_info_api(projectInfoReqJson) {
     try {
       const response = await axios.post(
-        "/project-info",
+        "/api/project-info",
         JSON.stringify(projectInfoReqJson),
         {
           headers: {

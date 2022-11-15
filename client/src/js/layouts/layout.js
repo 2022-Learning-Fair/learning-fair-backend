@@ -21,7 +21,7 @@ const Layout = () => {
   async function session_check_api(sessionChkJson) {
     try {
       const response = await axios.post(
-        "/session-check",
+        "/api/session-check",
         JSON.stringify(sessionChkJson),
         {
           headers: {
@@ -49,7 +49,7 @@ const Layout = () => {
   async function project_layout_info_api(projectLayoutInfoReqJson) {
     try {
       const response = await axios.post(
-        "/project-layout-info",
+        "/api/project-layout-info",
         JSON.stringify(projectLayoutInfoReqJson),
         {
           headers: {
