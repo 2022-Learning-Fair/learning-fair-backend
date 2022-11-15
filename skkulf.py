@@ -84,6 +84,7 @@ def session_check():
 
     session_check_json = request.get_json()
 
+    print(session_check_json)
     print(session_check_json['name'])
 
     if session_check_json['token'] in session:
