@@ -23,10 +23,8 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 @app.route('/')
 def index():
     if 'User_name' in session:
-        global like_button
-        like_button = 0
-        return '로그인 성공! 아이디는 %s' % escape(session['User_name']) + \
-            "<br><a href = '/logout'>로그아웃</a>"
+        print("why!!")
+        return jsonify({"state": "already_login"})
 
     return lfmodules.template(lfmodules.getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
 
@@ -34,17 +32,14 @@ def index():
 
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET': 
-        content = '''
-            <form action="/login" method="POST">
-                <p><input type="number" name="Student_ID" placeholder="Student_ID"></p>
-                <p><input type="text" name="User_name" placeholder="User_name"></p>
-                <p><input type="text" name="User_major" placeholder="User_major"></p>
-                <p><input type="submit" value="로그인"></p>
-            </form>
-        '''
-        return lfmodules.template(lfmodules.getContents(), content)
+    if request.method == 'GET':
+        if 'User_name' in session:
+            print("why!!")
+            return jsonify({"state": "already_login"})
+        return jsonify({"state" : "no_login"})
+    
     elif request.method == 'POST':
+
         sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type, user_token) VALUES (%s, %s, %s, %s, %s, %s)"
 
         user_json = request.get_json()
@@ -74,7 +69,11 @@ def login():
         
         session[User_token] = user_id_db_result[0][0]
         session[str(user_id_db_result[0][0])] = User_name
-        print(user_id_db_result[0][0])
+
+        if User_name in session:
+            print("why!!")
+            return jsonify({"state": "already_login"})
+
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0], "user_name":User_name})
 
 
@@ -343,7 +342,7 @@ def likes_project(pj_id):
         
         return jsonify(like_info_json)
 
-@app.route('/logout')
+@app.route('/api/logout')
 def logout():
     session.pop('User_name', None)
     return redirect(url_for('index'))
