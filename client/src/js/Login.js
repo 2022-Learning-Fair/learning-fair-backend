@@ -35,12 +35,13 @@ function Login() {
 
   async function login_api(submitValue) {
     try {
-      const response = await axios.post("/login", JSON.stringify(submitValue), {
+      const response = await axios.post("/api/login", JSON.stringify(submitValue), {
         headers: {
           "Content-Type": `application/json`
         }
       });
       localStorage.setItem("login-token", response.data.token);
+      localStorage.setItem("login-name", response.data.user_name);
       navigate("/main");
     } catch (e) {
       console.log(e);

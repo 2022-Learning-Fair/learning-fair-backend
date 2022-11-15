@@ -19,9 +19,6 @@ app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 #테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 
-like_button = 0
-
-
 
 @app.route('/')
 def index():
@@ -35,7 +32,7 @@ def index():
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/api/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET': 
         content = '''
@@ -51,13 +48,12 @@ def login():
         sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type, user_token) VALUES (%s, %s, %s, %s, %s, %s)"
 
         user_json = request.get_json()
-        
+    
         Student_ID = user_json['studentId']
         User_name = user_json['name']
         User_major = user_json['major']
         User_login_time = datetime.datetime.now()
         User_type = user_json['userType']
-
         User_token = secrets.token_hex(nbytes=32)
 
         conn = pymysql.connect(host=os.environ.get('DB_URL'),
@@ -75,20 +71,21 @@ def login():
         with conn.cursor() as cur:
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
-
-        print(user_id_db_result)
-
-        session['User_token'] = user_id_db_result[0][0]
-
+        
+        session[User_token] = user_id_db_result[0][0]
+        session[str(user_id_db_result[0][0])] = User_name
+        print(user_id_db_result[0][0])
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
 
 
-@app.route('/session-check', methods=['POST'])
+@app.route('/api/session-check', methods=['POST'])
 def session_check():
-    print(session)
 
     session_check_json = request.get_json()
+
+    print(session_check_json)
+    print(session)
 
     if session_check_json['token'] in session:
         return jsonify({"session":"active"})
@@ -97,7 +94,7 @@ def session_check():
 
 
 
-@app.route('/congrats-videos')
+@app.route('/api/congrats-videos')
 def congrats_vidoes():
     #영상 업데이트 되면 url 바꿔야 함
     congrats_vidoes_json = {
@@ -110,7 +107,7 @@ def congrats_vidoes():
 
 
 
-@app.route('/project-info', methods=['POST'])
+@app.route('/api/project-info', methods=['POST'])
 def project_info():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -146,7 +143,7 @@ def project_info():
 
 
 
-@app.route('/project-layout-info', methods=['POST'])
+@app.route('/api/project-layout-info', methods=['POST'])
 def project_layout_info():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -169,7 +166,7 @@ def project_layout_info():
 
 
 
-@app.route('/class')
+@app.route('/api/class')
 def class_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -226,7 +223,7 @@ def class_list():
 
     return jsonify(class_project_list_json)
 
-@app.route('/tag')
+@app.route('/api/tag')
 def tag_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
@@ -241,8 +238,6 @@ def tag_list():
     with conn.cursor() as cur:
         cur.execute(sql)
     tag_project_list_db_result = cur.fetchall()
-
-    print(tag_project_list_db_result)
 
     tag_project_list_json = {"projects":[]}
     for tag_project in tag_project_list_db_result:
@@ -260,14 +255,14 @@ def tag_list():
 
     return jsonify(tag_project_list_json)
 
-@app.route('/project/<int:id>')
+@app.route('/api/project/<int:id>')
 def project(id):
     Project =lfmodules.getProjects(id)
     title = Project[0][0]
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
-@app.route('/project/<int:pj_id>/like')
+@app.route('/api/project/<int:pj_id>/like')
 def likes_project(pj_id):
     us_id = session['User_id']
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
@@ -275,7 +270,10 @@ def likes_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT EXISTS(SELECT * FROM like_table WHERE project_id = {pj_id} AND user_id = {us_id}) AS t"""
+    likesql = f"""SELECT EXISTS(SELECT * FROM like_table
+                  WHERE project_id = {pj_id} AND
+                  user_id = {us_id}) AS t"""
+                  
     with conn.cursor() as cur:
         cur.execute(likesql)
         like_button = cur.fetchall()
@@ -293,20 +291,26 @@ def likes_project(pj_id):
                    (user_id, project_id) VALUES
                    ({us_id}, {pj_id})
                    """
-        likesql = f"""SELECT EXISTS(
-                   SELECT * FROM like_table
-                   WHERE user_id = {us_id} AND
-                   project_id = {pj_id}) AS t"""
-    
+        likecnts = f"""
+                   SELECT like_cnt
+                   FROM project
+                   where project_id = {pj_id}
+                   """
+                   
         with conn.cursor() as cur:
             cur.execute(likeup)
-            cur.execute(likesql)
             cur.execute(liketable)
-            like_data = cur.fetchall()
             conn.commit()
-        print(session['User_name'])
-        print('님이 좋아요를 눌렀어요')   
-        return jsonify({'msg': '좋아요 완료!'})
+            
+        with conn.cursor() as cur:
+            cur.execute(likecnts)
+            like_data = cur.fetchall()
+            like_data = like_data[0][0]
+            conn.commit()
+        like_button = True
+        like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+        
+        return jsonify(like_info_json)
     
     else :
         likeup= f"""
@@ -326,12 +330,18 @@ def likes_project(pj_id):
                    """
         with conn.cursor() as cur:
             cur.execute(likeup)
-            cur.execute(likecnts)
             cur.execute(liketable)
-            like_data = cur.fetchall()
             conn.commit()
-        print(like_data)
-        return jsonify({'msg': '좋아요 취소!'})
+        
+        with conn.cursor() as cur:
+            cur.execute(likecnts)
+            like_data = cur.fetchall()
+            like_data = like_data[0][0]
+            conn.commit()
+        like_button = False
+        like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+        
+        return jsonify(like_info_json)
 
 @app.route('/logout')
 def logout():

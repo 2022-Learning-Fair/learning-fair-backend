@@ -7,7 +7,7 @@ function Congrats() {
 
   useEffect(() => {
     axios
-      .get("/congrats-videos")
+      .get("/api/congrats-videos")
       .then(function (response) {
         setURLs(response.data);
       })

@@ -13,7 +13,7 @@ function Project() {
   async function project_info_api(projectInfoReqJson) {
     try {
       const response = await axios.post(
-        "/project-info",
+        "/api/project-info",
         JSON.stringify(projectInfoReqJson),
         {
           headers: {
@@ -59,14 +59,10 @@ function Project() {
           }
         }
       );
-      if (like_show > response.data.like_cnt) {
-        click.current = false;
-      } else {
-        click.current = true;
-      }
-      console.log(like_show, response.data.like_cnt);
-      console.log(click.current);
-      setLike(response.data.like_cnt);
+      const likeInfo = response.data.likeinfo;
+      click.current = likeInfo.isClicked;
+      setLike(likeInfo.like_cnt);
+      console.log(likeInfo, like_show, click.current);
     } catch (e) {
       console.log(e);
     }

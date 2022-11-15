@@ -14,14 +14,15 @@ import Project from "../Project";
 
 const Layout = () => {
   const sessionCheckJson = {
-    token: localStorage.getItem("login-token")
+    token: localStorage.getItem("login-token"),
+    name: localStorage.getItem("login-name")
   };
   const navigate = useNavigate();
 
   async function session_check_api(sessionChkJson) {
     try {
       const response = await axios.post(
-        "/session-check",
+        "/api/session-check",
         JSON.stringify(sessionChkJson),
         {
           headers: {
@@ -39,15 +40,17 @@ const Layout = () => {
     }
   }
 
-  // console.log(localStorage.getItem('login-token'))
-  session_check_api(sessionCheckJson);
+  console.log(localStorage.getItem("login-token"));
+  useEffect(() => {
+    session_check_api(sessionCheckJson);
+  }, []);
 
   //-----------세션 체크 완료------------------
 
   async function project_layout_info_api(projectLayoutInfoReqJson) {
     try {
       const response = await axios.post(
-        "/project-layout-info",
+        "/api/project-layout-info",
         JSON.stringify(projectLayoutInfoReqJson),
         {
           headers: {
