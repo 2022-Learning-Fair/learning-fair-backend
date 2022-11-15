@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/layouts/header.scss";
 import Button from "./header/button";
@@ -7,6 +7,7 @@ import Menu from "./header/Menu";
 
 const Header = () => {
   const [userName, setUserName] = useState("방문자");
+
   const navigate = useNavigate();
   function handleOnClick(classURL) {
     navigate(classURL);
@@ -16,6 +17,11 @@ const Header = () => {
   const handleToggle = () => {
     setActive(!isActive);
   };
+  useEffect(() => {
+    if (localStorage.getItem("login-name")) {
+      setUserName(localStorage.getItem("login-name"));
+    }
+  }, []);
   return (
     <header className="header">
       <img
