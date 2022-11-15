@@ -75,6 +75,7 @@ def login():
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
         session[User_token] = user_id_db_result[0][0]
+        session['User_name'] = request.form['User_name']
         print(user_id_db_result[0][0])
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
@@ -239,8 +240,6 @@ def tag_list():
     with conn.cursor() as cur:
         cur.execute(sql)
     tag_project_list_db_result = cur.fetchall()
-
-    print(tag_project_list_db_result)
 
     tag_project_list_json = {"projects":[]}
     for tag_project in tag_project_list_db_result:
