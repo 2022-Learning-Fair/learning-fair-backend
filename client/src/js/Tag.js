@@ -1,10 +1,6 @@
-import '../css/Tag.css';
+import "../css/Tag.css";
 function Tag() {
-    return (
-        <div className="Tag">
-        {/* {tagId} */}
-        </div>
-    );
+  return <div className="Tag">{/* {tagId} */}</div>;
 }
 
 export default Tag;

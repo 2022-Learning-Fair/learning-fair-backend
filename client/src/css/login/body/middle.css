@@ -1,6 +1,6 @@
-.loginBody-middle{
-    grid-row: middle;
-    margin:20px 0; 
+.loginBody-middle {
+  grid-row: middle;
+  margin: 20px 0;
 }
 
 @import url("middle/radio.css");

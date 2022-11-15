@@ -78,7 +78,7 @@ def login():
 
         print(user_id_db_result)
 
-        session[User_token] = user_id_db_result[0][0]
+        session['User_token'] = user_id_db_result[0][0]
 
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
@@ -155,8 +155,7 @@ def project_layout_info():
                        charset='utf8')
 
     project_layout_info_request_json = request.get_json()
-    sql = f"""SELECT team_name, project name, team_number FROM project WHERE project_id = {project_layout_info_request_json["project_id"]}"""
-
+    sql = f"""SELECT team_name, class_name, team_number FROM project WHERE project_id = {project_layout_info_request_json["project_id"]}"""
     with conn.cursor() as cur:
         cur.execute(sql)
     project_layout_info_db_result = cur.fetchall()
@@ -166,7 +165,6 @@ def project_layout_info():
         "class_name":project_layout_info_db_result[0][1],
         "team_number":project_layout_info_db_result[0][2]
     }
-
     return jsonify(project_layout_info_json)
 
 
@@ -181,15 +179,18 @@ def class_list():
 
     class_name = request.args.get('class')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE class_name = '{class_name}'"""
-
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}'"""
+    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c,project_name,like_cnt,project_thumbnail_url,project_id  FROM project WHERE class_name = '{class_name}' ORDER BY RAND()"""
     with conn.cursor() as cur:
         cur.execute(sql)
-    class_project_list_db_result = cur.fetchall()
-
-    print(class_project_list_db_result)
-
-    class_project_list_json = {"projects":[]}
+        class_project_list_db_result = cur.fetchall()
+    
+    with conn.cursor() as cur:
+        cur.execute(sql_)
+        class_project_list_db_result_rand = cur.fetchall()
+        
+    class_project_list_json = {"projects":[],"projectsRand":[]}
+    
     for class_project in class_project_list_db_result:
         project_container = {
             "team_name":class_project[0], 
@@ -199,9 +200,29 @@ def class_list():
             "hashtag_custom_a":class_project[4], 
             "hashtag_custom_b":class_project[5], 
             "hashtag_custom_c":class_project[6],
+            "project_name":class_project[7],
+            "like_cnt":class_project[8],
+            "project_thumbnail_url":class_project[9],
+            "project_id":class_project[10]
         }
-
         class_project_list_json["projects"].append(project_container)
+        
+    for class_project in class_project_list_db_result_rand:
+        project_container_rand = {
+            "team_name":class_project[0], 
+            "team_member":class_project[1], 
+            "team_number":class_project[2], 
+            "hashtag_main":class_project[3], 
+            "hashtag_custom_a":class_project[4], 
+            "hashtag_custom_b":class_project[5], 
+            "hashtag_custom_c":class_project[6],
+            "project_name":class_project[7],
+            "like_cnt":class_project[8],
+            "project_thumbnail_url":class_project[9],
+            "project_id":class_project[10]
+        }
+        
+        class_project_list_json["projectsRand"].append(project_container_rand)
 
     return jsonify(class_project_list_json)
 
@@ -215,7 +236,7 @@ def tag_list():
 
     tag_code = request.args.get('tag')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_code}'"""
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_code}' ORDER BY RAND()"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
@@ -247,43 +268,57 @@ def project(id):
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
 @app.route('/project/<int:pj_id>/like')
-def like_project(pj_id):
+def likes_project(pj_id):
+    us_id = session['User_id']
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT 1 FROM like_table WHERE project_id = {pj_id} AND user_id = {session[0]}"""
-    conn.cursor.execute(likesql)
-    like_button = cur.fetchall()
-    like_button = like_button[0][0]
-    
-    if like_button == 1:
-        likeup= f"""
-                UPDATE project
-                set like_cnt = like_cnt - 1
-                where project_id = {pj_id}
-                """
-        likecnts = f"""
-                   SELECT like_cnt
-                   FROM project
-                   where project_id = {pj_id}
-                   """
-        with conn.cursor() as cur:
-            cur.execute(likeup)
-            cur.execute(likecnts)
-            like_data = cur.fetchall()
-            conn.commit()
-        print(like_data[0][0])    
-        like_button = 1
-        return jsonify({"like_cnt": like_data[0][0]})
-    
-    else :
+    likesql = f"""SELECT EXISTS(SELECT * FROM like_table WHERE project_id = {pj_id} AND user_id = {us_id}) AS t"""
+    with conn.cursor() as cur:
+        cur.execute(likesql)
+        like_button = cur.fetchall()
+        like_button = like_button[0][0]
+        conn.commit()
+        
+    if like_button == 0:
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt + 1
                 where project_id = {pj_id}
                 """
+        liketable= f"""
+                   INSERT into like_table
+                   (user_id, project_id) VALUES
+                   ({us_id}, {pj_id})
+                   """
+        likesql = f"""SELECT EXISTS(
+                   SELECT * FROM like_table
+                   WHERE user_id = {us_id} AND
+                   project_id = {pj_id}) AS t"""
+    
+        with conn.cursor() as cur:
+            cur.execute(likeup)
+            cur.execute(likesql)
+            cur.execute(liketable)
+            like_data = cur.fetchall()
+            conn.commit()
+        print(session['User_name'])
+        print('님이 좋아요를 눌렀어요')   
+        return jsonify({'msg': '좋아요 완료!'})
+    
+    else :
+        likeup= f"""
+                UPDATE project
+                set like_cnt = like_cnt - 1
+                where project_id = {pj_id}
+                """
+        liketable= f"""
+                   DELETE from like_table
+                   WHERE user_id = {us_id}
+                   AND project_id = {pj_id}
+                   """
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
@@ -292,13 +327,11 @@ def like_project(pj_id):
         with conn.cursor() as cur:
             cur.execute(likeup)
             cur.execute(likecnts)
+            cur.execute(liketable)
             like_data = cur.fetchall()
             conn.commit()
-        print(like_data[0][0])    
-        like_button = 0
-        return jsonify({"like_cnt": like_data[0][0]})
-    
-
+        print(like_data)
+        return jsonify({'msg': '좋아요 취소!'})
 
 @app.route('/logout')
 def logout():
