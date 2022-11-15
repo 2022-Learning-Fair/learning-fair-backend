@@ -71,8 +71,9 @@ def login():
         with conn.cursor() as cur:
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
+        
         session[User_token] = user_id_db_result[0][0]
-        session['User_name'] = User_name
+        session[user_id_db_result[0][0]] = User_name
         print(user_id_db_result[0][0])
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
@@ -80,15 +81,14 @@ def login():
 
 @app.route('/api/session-check', methods=['POST'])
 def session_check():
-    print(session)
 
     session_check_json = request.get_json()
 
-    #print(session_check_json)
+    print(session_check_json)
     print(session)
 
     if session_check_json['token'] in session:
-        return jsonify({"session":"active", "User_name":session['User_name']})
+        return jsonify({"session":"active"})
     else:
         return jsonify({"session":"deactive"})
 
