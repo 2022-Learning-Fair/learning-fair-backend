@@ -19,7 +19,7 @@ function Class() {
 
   useEffect(() => {
     axios
-      .get("/class", {
+      .get("/api/class", {
         params: { class: classId }
       })
       .then(function (response) {
