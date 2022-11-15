@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Layout from "./layouts/layout";
+import WordCloud from "./WordCloud";
 function App() {
   return (
     <div className="App">
@@ -8,6 +9,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />}></Route>
           <Route path="/*" element={<Layout />} />
+          <Route path="/main" element={<WordCloud />}></Route>
         </Routes>
       </Router>
     </div>
