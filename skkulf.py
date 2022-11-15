@@ -69,6 +69,7 @@ def login():
         
         session[User_token] = user_id_db_result[0][0]
         session[str(user_id_db_result[0][0])] = User_name
+        session['User_id'] = user_id_db_result[0][0]
 
         if User_name in session:
             print("why!!")
@@ -84,6 +85,7 @@ def session_check():
     session_check_json = request.get_json()
 
     print(session_check_json)
+    print(session)
     print(session_check_json['name'])
 
     if session_check_json['token'] in session:
@@ -262,13 +264,14 @@ def project(id):
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
 @app.route('/api/project/<int:pj_id>/like')
-def likes_project(pj_id):
+def like_project(pj_id):
     us_id = session['User_id']
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
+
     likesql = f"""SELECT EXISTS(SELECT * FROM like_table
                   WHERE project_id = {pj_id} AND
                   user_id = {us_id}) AS t"""
@@ -306,10 +309,12 @@ def likes_project(pj_id):
             like_data = cur.fetchall()
             like_data = like_data[0][0]
             conn.commit()
+
         like_button = True
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
-        return jsonify(like_info_json)
+        return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
+        #return jsonify(like_info_json)
     
     else :
         likeup= f"""
@@ -340,7 +345,8 @@ def likes_project(pj_id):
         like_button = False
         like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
         
-        return jsonify(like_info_json)
+        return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
+        #return jsonify(like_info_json)
 
 @app.route('/api/logout')
 def logout():
