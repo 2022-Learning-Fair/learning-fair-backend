@@ -45,6 +45,9 @@ function Tag() {
   //     });
   // }, [tagName]);
   const TagList=['게임','패션','환경',"음악","운동스포츠",'요리','교육','영화도서','드라마','생활','AI','여행','힐링','비즈니스','커뮤니케이션','쇼핑','지도','창작','예술디자인','컴퓨팅','보안','편의도구','취업','기타']
+  function OnOff(){
+    
+  };
   return (
   <div className="Tag">
     <div className="TagList">
