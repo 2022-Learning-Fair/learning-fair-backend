@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Layout from "./layouts/layout";
+import WordCloud from "./WordCloud";
 function App() {
   return (
     <div className="App">

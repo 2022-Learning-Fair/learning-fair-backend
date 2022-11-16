@@ -14,7 +14,8 @@ import Project from "../Project";
 
 const Layout = () => {
   const sessionCheckJson = {
-    token: localStorage.getItem("login-token")
+    token: localStorage.getItem("login-token"),
+    name: localStorage.getItem("login-name")
   };
   const navigate = useNavigate();
 
@@ -34,6 +35,8 @@ const Layout = () => {
         console.log("You need to login in!");
         navigate("/");
       }
+
+      
     } catch (e) {
       console.log(e);
     }

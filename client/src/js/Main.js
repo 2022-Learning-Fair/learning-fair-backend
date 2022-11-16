@@ -1,13 +1,12 @@
+import React from "react";
+import WordCloud from "./WordCloud";
+import "../css/Main.css";
 function Main() {
-  // function RequireAuth({ children, redirectTo }) {
-  //     let isAuthenticated = getAuth();
-  //     return isAuthenticated ? children : <Navigate to={redirectTo} />;
-  // }
-  // RequireAuth('/login')
-  // return (
-  //     <div className="Main">
-  //     </div>
-  // );
+  return (
+    <div className="WordCloudPage">
+      <WordCloud />
+    </div>
+  );
 }
 
 export default Main;
