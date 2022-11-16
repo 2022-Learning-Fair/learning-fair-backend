@@ -265,12 +265,13 @@ def project(id):
 
 @app.route('/api/project/<int:pj_id>/like')
 def like_project(pj_id):
-    us_id = session['User_id']
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
+    
+    us_id = session['User_id']
 
     likesql = f"""SELECT EXISTS(SELECT * FROM like_table
                   WHERE project_id = {pj_id} AND
@@ -286,7 +287,7 @@ def like_project(pj_id):
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt + 1
-                where project_id = {pj_id}
+                WHERE project_id = {pj_id}
                 """
         liketable= f"""
                    INSERT into like_table
@@ -296,7 +297,7 @@ def like_project(pj_id):
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
-                   where project_id = {pj_id}
+                   WHERE project_id = {pj_id}
                    """
                    
         with conn.cursor() as cur:
@@ -320,7 +321,7 @@ def like_project(pj_id):
         likeup= f"""
                 UPDATE project
                 set like_cnt = like_cnt - 1
-                where project_id = {pj_id}
+                WHERE project_id = {pj_id}
                 """
         liketable= f"""
                    DELETE from like_table
@@ -330,7 +331,7 @@ def like_project(pj_id):
         likecnts = f"""
                    SELECT like_cnt
                    FROM project
-                   where project_id = {pj_id}
+                   WHERE project_id = {pj_id}
                    """
         with conn.cursor() as cur:
             cur.execute(likeup)
