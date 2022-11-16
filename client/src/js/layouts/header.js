@@ -93,6 +93,15 @@ const Header = () => {
           </li>
           <li>
           <Button id='Explore2' onClick={()=>handleOnClick('/project/${Math.floor( jbRandom * 100 ) }')} value='탐험하기'/>
+          </li>
+          <li>
+            <Button
+            id="Explore2"
+            onClick={() =>
+            handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
+            }
+            value="탐험하기"
+            />
           </li>         
         </ul>
       </nav>
@@ -137,8 +146,15 @@ const Header = () => {
                 </a>            
               </li>
               <li>
-                <Button id='Explore2' onClick={()=>handleOnClick('/project/${Math.floor( jbRandom * 100 ) }')} value='탐험하기'/>
-              </li>                  
+                <Button
+                id="Explore2"
+                onClick={() =>
+                handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
+                }
+                value="탐험하기"
+                />
+              </li>
+                                
           </ul>
         </nav>
       </label>
