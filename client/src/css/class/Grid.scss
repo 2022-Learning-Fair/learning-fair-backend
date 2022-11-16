@@ -2,12 +2,14 @@
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .GridImgWrapper {
   margin-bottom: 13px;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
+  justify-content: center;
 }
 .Grid:nth-child(3n) {
   .GridImgWrapper {
