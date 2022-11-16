@@ -24,11 +24,33 @@
   color: #00620a;
   font-weight: 900;
 }
-.ProjectYoutube {
+/* .ProjectYoutube {
   width: 100%;
-}
+} */
 
 .ProjectPDF {
   width: 100%;
   height: 90%;
+}
+
+@media(max-width:768px){
+  .ProjectYoutube{
+    overflow:visible;
+    width:90%;
+    height:60%;
+    margin-left:5%;
+    
+  }
+  .ProjectPDF{
+    width:90%;
+    height:60%;
+    margin-left:5%;
+  }
+  .ProjectContent p{
+    font-size:20pt;
+    margin-left:5%;
+  }
+  .ProjectContent{
+    overflow-y:hidden;
+  }
 }
