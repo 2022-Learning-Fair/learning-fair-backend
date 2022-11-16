@@ -1,9 +1,11 @@
-
-function TagBtn({ value,onClick,key }) {
+import { Link } from 'react-router-dom';
+function TagBtn({ value,onClick,key,link }) {
     return (
-    <div className="TagBtn" key={key} value={value} onClick={onClick}>
+    <Link to={link}>
+      <div className="TagBtn" key={key} value={value} onClick={onClick}>
         #{value}
-    </div>
+      </div>
+    </Link>
   );
 }
 export default TagBtn;
