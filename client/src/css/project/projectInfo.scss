@@ -49,5 +49,18 @@
     background-color: rgba(255, 255, 255, 0.554);
   }
 }
+@media(max-width:768px){
+  .ProjectInfo{
+    margin-left:15px;
+    margin-right:15px;
+    h2{
+      font-size:25pt;
+    }
+  }
+  .ProjectInfoWrapper{
+    max-height:100%;
+  }
+  
+}
 
 @import url("LikeBtn.scss");
