@@ -122,6 +122,14 @@ function Project() {
     project_info_api({ project_id });
   }, [project_id]);
 
+  var youtube_w=700;
+  var youtube_h=350;
+  if(window.matchMedia("(max-width:768px)").matches) {
+    youtube_w=window.innerWidth*0.8;
+    youtube_h=youtube_w*0.7;
+  }
+  
+
   return (
     <div className="Project">
       <div className="ProjectInfo">
@@ -152,8 +160,7 @@ function Project() {
           <YouTube
             className="ProjectYoutube"
             videoId={"fEtJDkaBqyA"}
-            opts={{
-              width:window.innerWidth*0.8, height:window.innerHeight*0.5,
+            opts={{ width:youtube_w, height:youtube_h,
               playerVars: { autoplay: 1, rel: 0, modestbranding: 1 }
             }}
             onEnd={(e) => {
