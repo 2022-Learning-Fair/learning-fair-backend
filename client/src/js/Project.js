@@ -11,12 +11,46 @@ function Project() {
         token: localStorage.getItem("login-token"),
         name: localStorage.getItem("login-name")
     };
+    const navigate = useNavigate();
+    
+    async function session_check_api(sessionChkreqJson) {
+        try {
+          const response = await axios.post(
+            "/api/session-check",
+            JSON.stringify(sessionChkreqJson),
+            {
+              headers: {
+                "Content-Type": `application/json`
+              }
+            }
+          );
+    
+          if (response["data"]["session"] === "deactive") {
+            console.log("You need to login in!");
+            navigate("/");
+          }
+    
+          
+        } catch (e) {
+          console.log(e);
+        }
+    }
+    
+    useEffect(() => {
+        session_check_api(sessionCheckJson);
+    }, []);
+    
+    //-----------세션 체크 완료------------------
+
+
+    const loginCheckJson = {
+        token: localStorage.getItem("login-token"),
+        name: localStorage.getItem("login-name")
+    };
 
   const project = useRef("");
   const [like_show, setLike] = useState(0);
   const click = useRef(false);
-
-  const navigate = useNavigate();
 
   async function project_info_api(projectInfoReqJson) {
     try {
@@ -56,11 +90,11 @@ function Project() {
     }
   }
 
-  async function handleOnclick(sessionCheckreqJson) {
+  async function handleOnclick(loginCheckreqJson) {
     try {
       const response = await axios.post(
         `/api/project/${project_id}/like`,
-        JSON.stringify(sessionCheckreqJson),
+        JSON.stringify(loginCheckreqJson),
         {
           headers: {
             "Content-Type": `application/json`
@@ -96,7 +130,7 @@ function Project() {
         <div className="ProjectInfoWrapper">
           <button
             id="ProjectLike"
-            onClick={()=>{handleOnclick(sessionCheckJson)}}
+            onClick={()=>{handleOnclick(loginCheckJson)}}
             className={`${click.current ? "" : "NoneClick"}`}
           >
             <div>
