@@ -7,13 +7,8 @@ function WordCloud() {
     const navigate = useNavigate();
     const callbacks = useMemo(() => {
         return {
-            onWordClick: word => {
-                if (word.text != "러닝페어" && word.text != "성균관대" && word.text != "문제해결" && word.text != "알고리즘" && word.text != "2022") {
-                    navigate(`/tags/${word.text}`)
-                }
-            },
-            onWordMouseOver: () => {
-                return null;
+            onWordClick: () => {
+                navigate(`/tag`)
             }
         }
     }, []);
