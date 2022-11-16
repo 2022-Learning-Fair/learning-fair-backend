@@ -167,7 +167,7 @@ def testjson():
     print(session['User_token'])
     return jsonify({"test":"hello"})
 
-@app.route('/tag')
+@app.route('/tag/')
 def tag_list():
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
