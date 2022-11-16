@@ -60,3 +60,28 @@
     transform: translateX(0) rotate(360deg);
   }
 }
+@media(max-width: 768px){
+  :root{
+    width:auto;
+    height:auto;
+  }
+  .loginButton{
+    width:auto;
+    height:auto;
+    font-size:100%;
+    top:-20px;
+    overflow:hidden;
+    margin-left:17%;
+    margin-right:17%;
+    z-index:9;
+  }
+  .dot *{
+    margin-left:0;
+  }
+  .loginButton:hover .dot,
+  .loginButton:focus .dot{
+    display:none;
+  }
+
+}
+
