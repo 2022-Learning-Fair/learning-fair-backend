@@ -232,17 +232,24 @@ def tag_list():
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
 
-    tag_code = request.args.get('tag')
+    tag_name = request.args.get('tag')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_code}' ORDER BY RAND()"""
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_name}'"""
+    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_name}' ORDER BY RAND()"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
-    tag_project_list_db_result = cur.fetchall()
+        tag_project_list_db_result = cur.fetchall()
+    
+    with conn.cursor() as cur:
+        cur.execute(sql_)
+        tag_project_list_db_result_rand = cur.fetchall()
+    
 
-    tag_project_list_json = {"projects":[]}
+    tag_project_list_json = {"projects":[], "projectsRand":[]}
+
     for tag_project in tag_project_list_db_result:
-        project_container = {
+        tagproject_container = {
             "team_name":tag_project[0], 
             "team_member":tag_project[1], 
             "team_number":tag_project[2], 
@@ -250,9 +257,30 @@ def tag_list():
             "hashtag_custom_a":tag_project[4], 
             "hashtag_custom_b":tag_project[5], 
             "hashtag_custom_c":tag_project[6],
+            "project_name":tag_project[7],
+            "like_cnt":tag_project[8],
+            "project_thumbnail_url":tag_project[9],
+            "project_id":tag_project[10]
         }
 
-        tag_project_list_json["projects"].append(project_container)
+        tag_project_list_json["projects"].append(tagproject_container)
+    
+    for tag_project in tag_project_list_db_result_rand:
+        tagproject_container_rand = {
+            "team_name":tag_project[0], 
+            "team_member":tag_project[1], 
+            "team_number":tag_project[2], 
+            "hashtag_main":tag_project[3], 
+            "hashtag_custom_a":tag_project[4], 
+            "hashtag_custom_b":tag_project[5], 
+            "hashtag_custom_c":tag_project[6],
+            "project_name":tag_project[7],
+            "like_cnt":tag_project[8],
+            "project_thumbnail_url":tag_project[9],
+            "project_id":tag_project[10]
+        }
+
+        tag_project_list_json["projectsRand"].append(tagproject_container_rand)
 
     return jsonify(tag_project_list_json)
 
@@ -272,8 +300,6 @@ def like_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    
-    #us_id = session['User_id']
 
     if like_request_json['token'] in session:
         us_id = session[like_request_json['token']]
