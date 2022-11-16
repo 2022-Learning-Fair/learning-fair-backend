@@ -67,3 +67,26 @@ $target: #edfeedd3;
     transform: translateX(-230px);
   }
 }
+
+@media(max-width:768px){
+  .MainTitle{
+    margin-left:5%;
+    margin-bottom:5%;
+  }
+  .focus{
+    font-size:30px;
+    font-weight:600;
+    opacity:1;
+    overflow: hidden;
+    filter:none;
+  }
+  .mask{
+    font-size:30px;
+    padding:5px;
+    overflow: hidden;
+    display:none;
+  }
+  .titleText{
+    overflow: hidden;
+  }
+}

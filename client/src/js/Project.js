@@ -153,6 +153,7 @@ function Project() {
             className="ProjectYoutube"
             videoId={"fEtJDkaBqyA"}
             opts={{
+              width:window.innerWidth*0.8, height:window.innerHeight*0.5,
               playerVars: { autoplay: 1, rel: 0, modestbranding: 1 }
             }}
             onEnd={(e) => {
