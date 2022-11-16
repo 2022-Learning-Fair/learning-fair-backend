@@ -8,7 +8,7 @@ import TagBtn from "./Tag/Tag";
 function Tag() {
   // const tagName = useParams().tagName;
   const tagId = useParams().tagId;
-  // const [onClickValue, setOnClickValue] = useState([]);
+  const [onClickValue, setOnClickValue] = useState([]);
   const [projects, setprojects] = useState([]);
   const projectList = useRef(projects);
   const projectRandList = useRef(projects);
@@ -60,7 +60,7 @@ function Tag() {
   return (
     <div className="Tag">
       <div className="TagList">
-        {TagList.map((Tag, idx) => <TagBtn value={Tag} key={`Tag${idx}`} link={`/tag/${Tag}`} onClick={() => handleOnClick(Tag, idx)} />)}
+        {TagList.map((Tag, idx) => <TagBtn value={Tag} className={`TagBtn ${onClickValue[idx]}?'onClick;''`} key={`Tag${idx}`} onClick={(event) => handleOnClick(event)} />)}
         {/* {TagList.map((Tag,idx)=>console.log(Tag))} */}
       </div>
 
