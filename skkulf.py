@@ -249,7 +249,7 @@ def tag_list():
     tag_project_list_json = {"projects":[], "projectsRand":[]}
 
     for tag_project in tag_project_list_db_result:
-        project_container = {
+        tagproject_container = {
             "team_name":tag_project[0], 
             "team_member":tag_project[1], 
             "team_number":tag_project[2], 
@@ -257,12 +257,16 @@ def tag_list():
             "hashtag_custom_a":tag_project[4], 
             "hashtag_custom_b":tag_project[5], 
             "hashtag_custom_c":tag_project[6],
+            "project_name":tag_project[7],
+            "like_cnt":tag_project[8],
+            "project_thumbnail_url":tag_project[9],
+            "project_id":tag_project[10]
         }
 
-        tag_project_list_json["projects"].append(project_container)
+        tag_project_list_json["projects"].append(tagproject_container)
     
     for tag_project in tag_project_list_db_result_rand:
-        project_container_rand = {
+        tagproject_container_rand = {
             "team_name":tag_project[0], 
             "team_member":tag_project[1], 
             "team_number":tag_project[2], 
@@ -270,9 +274,13 @@ def tag_list():
             "hashtag_custom_a":tag_project[4], 
             "hashtag_custom_b":tag_project[5], 
             "hashtag_custom_c":tag_project[6],
+            "project_name":tag_project[7],
+            "like_cnt":tag_project[8],
+            "project_thumbnail_url":tag_project[9],
+            "project_id":tag_project[10]
         }
 
-        tag_project_list_json["projectsRand"].append(project_container_rand)
+        tag_project_list_json["projectsRand"].append(tagproject_container_rand)
 
     return jsonify(tag_project_list_json)
 
