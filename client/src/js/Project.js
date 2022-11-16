@@ -4,8 +4,50 @@ import "../css/Project.scss";
 import axios from "axios";
 import YouTube from "react-youtube";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Project() {
+    const sessionCheckJson = {
+        token: localStorage.getItem("login-token"),
+        name: localStorage.getItem("login-name")
+    };
+    const navigate = useNavigate();
+    
+    async function session_check_api(sessionChkreqJson) {
+        try {
+          const response = await axios.post(
+            "/api/session-check",
+            JSON.stringify(sessionChkreqJson),
+            {
+              headers: {
+                "Content-Type": `application/json`
+              }
+            }
+          );
+    
+          if (response["data"]["session"] === "deactive") {
+            console.log("You need to login in!");
+            navigate("/");
+          }
+    
+          
+        } catch (e) {
+          console.log(e);
+        }
+    }
+    
+    useEffect(() => {
+        session_check_api(sessionCheckJson);
+    }, []);
+    
+    //-----------세션 체크 완료------------------
+
+
+    const loginCheckJson = {
+        token: localStorage.getItem("login-token"),
+        name: localStorage.getItem("login-name")
+    };
+
   const project = useRef("");
   const [like_show, setLike] = useState(0);
   const click = useRef(false);
@@ -48,21 +90,28 @@ function Project() {
     }
   }
 
-  async function handleOnclick() {
+  async function handleOnclick(loginCheckreqJson) {
     try {
-      const response = await axios.get(
-        `/project/${project_id}/like`,
-        JSON.stringify(),
+      const response = await axios.post(
+        `/api/project/${project_id}/like`,
+        JSON.stringify(loginCheckreqJson),
         {
           headers: {
             "Content-Type": `application/json`
           }
         }
       );
-      const likeInfo = response.data.likeinfo;
-      click.current = likeInfo.isClicked;
-      setLike(likeInfo.like_cnt);
-      console.log(likeInfo, like_show, click.current);
+
+      if (response["data"]["likeinfo"] === "session-out") {
+        console.log("You need to login in!");
+        navigate("/");
+      }
+      else{
+        const likeInfo = response.data.likeinfo;
+        click.current = likeInfo.isClicked;
+        setLike(likeInfo.like_cnt);
+        console.log(likeInfo, like_show, click.current);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -81,7 +130,7 @@ function Project() {
         <div className="ProjectInfoWrapper">
           <button
             id="ProjectLike"
-            onClick={handleOnclick}
+            onClick={()=>{handleOnclick(loginCheckJson)}}
             className={`${click.current ? "" : "NoneClick"}`}
           >
             <div>
