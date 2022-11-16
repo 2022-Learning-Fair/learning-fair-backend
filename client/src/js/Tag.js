@@ -8,7 +8,7 @@ import TagBtn from "./Tag/Tag";
 function Tag() {
   // const tagName = useParams().tagName;
   const tagId = useParams().tagId;
-  // const [onClickValue, setOnClickValue] = useState([]);
+  const [onClickValue, setOnClickValue] = useState([]);
   const [projects, setprojects] = useState([]);
   const projectList = useRef(projects);
   const projectRandList = useRef(projects);
