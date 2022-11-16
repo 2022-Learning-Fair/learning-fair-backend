@@ -117,7 +117,7 @@ function Project() {
           <p>YouTube</p>
           <YouTube
             className="ProjectYoutube"
-            videoId={"fEtJDkaBqyA"}
+            videoId={project.current.project_youtube_url}
             opts={{
               playerVars: { autoplay: 1, rel: 0, modestbranding: 1 }
             }}
