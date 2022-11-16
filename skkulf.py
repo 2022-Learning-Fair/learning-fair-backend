@@ -344,8 +344,7 @@ def like_project(pj_id):
 
             like_button = True
             like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
-            
-            #return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
+
             return jsonify(like_info_json)
         
         else :
@@ -377,7 +376,6 @@ def like_project(pj_id):
             like_button = False
             like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
             
-            #return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
     else:
         like_info_json = {"likeinfo":"session-out"}
 
