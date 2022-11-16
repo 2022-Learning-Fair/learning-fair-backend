@@ -10,7 +10,7 @@ function Tag() {
   const [projects, setprojects] = useState([]);
   const projectList = useRef(projects);
   const projectRandList = useRef(projects);
-  const [checked, setChecked] = useState([]);
+  const [clicked, setClicked] = useState();
 
   // function handleChecked({ target }) {
   //   target.checked
@@ -24,18 +24,15 @@ function Tag() {
   const TagList = ['게임', '패션', '환경', "의료", "음악", "운동스포츠", '요리', '교육', '영화도서', '드라마', '생활', 'AI', '여행', '힐링', '비즈니스', '커뮤니케이션', '쇼핑', '지도', '창작', '예술디자인', '컴퓨팅', '보안', '편의도구', '취업', '기타']
   var clickedBtn = useRef([]);
   const [isActive, setActive] = useState(false);
-  const handleOnClick = (tag, idx, e) => {
-    console.log(tag, idx);
-    let lis = [];
-    for(let i = 0; i < TagList.length; i++)
-      lis.push(false);
-    lis[idx] = true;
-    setChecked(lis);
-    e.target.classList.toggle('onClick')
-
-    // console.log(e)
-    // e.target.classList.toggle('onClick')
-    // setOnClickValue
+  const handleOnClick = event => {
+    if(clicked !== undefined){
+      clicked.classList.remove('onClick')
+    }
+    if(clicked === event.target){
+      return
+    }
+    event.target.classList.toggle('onClick')
+    setClicked(event.target)
   };
 
   // useEffect(() => {
@@ -61,7 +58,7 @@ function Tag() {
   return (
     <div className="Tag">
       <div className="TagList">
-        {TagList.map((Tag, idx) => <TagBtn value={Tag} className={`TagBtn ${onClickValue[idx]}?'onClick;''`} key={`Tag${idx}`} onClick={() => handleOnClick(Tag, idx)} />)}
+        {TagList.map((Tag, idx) => <TagBtn value={Tag} className={`TagBtn ${onClickValue[idx]}?'onClick;''`} key={`Tag${idx}`} onClick={(event) => handleOnClick(event)} />)}
         {/* {TagList.map((Tag,idx)=>console.log(Tag))} */}
       </div>
 
