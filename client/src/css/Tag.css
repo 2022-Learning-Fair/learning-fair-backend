@@ -1,4 +1,4 @@
-.Tag{
+.TagBtn{
     position:relative;
     background-color:#bce4c70c;
 	border-radius:20px;
@@ -15,13 +15,13 @@
     margin : 5px 5px;
 
 }
-.Tag:hover{
+.TagBtn:hover{
     background-color:#bce4c7e8;
     color:#17442470;
 }
 
-.Tag:active{
-    background-color:#bce4c7e8;
+.onClick{
+    background-color:#e7630ce8;
     color:#17442470;
 }
 
@@ -33,5 +33,4 @@
     height: auto;
 }
   
-@import url("class/SwitchBtn.scss");
 @import url("class/Grid.scss");

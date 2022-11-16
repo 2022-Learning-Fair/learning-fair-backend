@@ -9,7 +9,7 @@ function WordCloud() {
         return {
             onWordClick: (props) => {
                 if(props.text != "러닝페어" && props.text != "성균관대" && props.text != "문제해결" && props.text != "알고리즘" && props.text != "2022") {
-                    navigate(`/tags/${props.text}`)
+                    navigate(`/tag`)
                 }
             },
             // onWordMouseOver: console.log

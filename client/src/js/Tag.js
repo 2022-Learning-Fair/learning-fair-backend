@@ -1,241 +1,58 @@
 import "../css/Tag.css";
-import { useParams } from "react-router-dom";
 import Grid from "./Grid/Grid";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import TagBtn from "./Tag/Tag";
+
 function Tag() {
-  const tagName = useParams().tagName;
+  // const tagName = useParams().tagName;
+  // const [onClickValue,setOnClickValue]=useState([]);
   const [projects, setprojects] = useState([]);
   const projectList = useRef(projects);
   const projectRandList = useRef(projects);
-  // const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState([]);
 
-  function handleChecked({ target }) {
-    target.checked
-      ? setprojects(projectList.current)
-      : setprojects(projectRandList.current);
-  }
-
+  // function handleChecked({ target }) {
+  //   target.checked
+  //     ? setprojects(projectList.current)
+  //     : setprojects(projectRandList.current);
+  // }
+/**
+ * use state 여러개 만들어서 onclick 여부를 배열로 생성해 
+ * 
+ */
+  var clickedBtn = useRef([]);
   const [isActive, setActive] = useState(false);
-  const handleToggle = () => {
-    setActive(!isActive);
+  const handleOnClick = (e) => {
+    console.log(e)
+    e.target.classList.toggle('onClick')
+    // setOnClickValue
   };
  
-  useEffect(() => {
-    axios
-      .get("", {
-        params: { tag: tagName }
-      })
-      .then(function (response) {
-        console.log(response.data);
-        projectList.current = response.data.projects;
-        projectRandList.current = response.data.projectsRand;
-        setprojects(projectRandList.current);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, [tagName]);
-
-  
+  // useEffect(() => {
+  //   axios
+  //     .get("", {
+  //       params: { tag: tagName }
+  //     })
+  //     .then(function (response) {
+  //       console.log(response.data);
+  //       projectList.current = response.data.projects;
+  //       projectRandList.current = response.data.projectsRand;
+  //       setprojects(projectRandList.current);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }, [tagName]);
+  const TagList=['게임','패션','환경',"음악","운동스포츠",'요리','교육','영화도서','드라마','생활','AI','여행','힐링','비즈니스','커뮤니케이션','쇼핑','지도','창작','예술디자인','컴퓨팅','보안','편의도구','취업','기타']
   return (
-    /* onClick={} 뒤에 어떻게 해야하는지 몰라서 일단 handleToggle 넣음 */
-  <div>
-    <div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="게임">
-        <span>#게임</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="패션"
-      >
-        <span>#패션</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="환경">
-        <span>#환경</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="의료">
-        <span>#의료</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="음악">
-        <span>#음악</span>
-      </div>
-      <div className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="운동스포츠">
-        <span>#운동/스포츠</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="요리">
-        <span>#요리</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="교육">
-        <span>#교육</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="영화도서">
-        <span>#영화/도서</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="드라마">
-        <span>#드라마</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="생활">
-        <span>#생활</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="AI">
-        <span>#AI</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="여행">
-        <span>#여행</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="힐링">
-        <span>#힐링</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="비즈니스">
-        <span>#비즈니스</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="커뮤니케이션">
-        <span>#커뮤니케이션</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="쇼핑">
-        <span>#쇼핑</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="지도">
-        <span>#지도</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="창작">
-        <span>#창작</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="예술디자인">
-        <span>#예술/디자인</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="컴퓨팅">
-        <span>#컴퓨팅</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="보안">
-        <span>#보안</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="편의도구">
-        <span>#편의/도구</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="취업">
-        <span>#취업</span>
-      </div>
-      <div 
-      className="Tag"
-      onClick={handleToggle}
-      id="TagBtn"
-      value="기타">
-        <span>#기타</span>
-      </div>
+  <div className="Tag">
+    <div className="TagList">
+      {TagList.map((Tag,idx)=><TagBtn value={Tag} className={`TagBtn ${onClickValue[idx]}?'onClick;''`} key={`Tag${idx}`} onClick={handleOnClick}/>)}
+      {/* {TagList.map((Tag,idx)=>console.log(Tag))} */}
     </div>
 
     <div className="Class">
-      <div className="ChosenTag">
-        <p>태그를 띄우고 싶어요</p>
-      </div>
-      <div className="ClassBtnWrapper">
-        <div>
-          <input
-            type="checkbox"
-            id="Switch"
-            onChange={(e) => handleChecked(e)}
-          />
-          <label htmlFor="Switch" className="SwitchLabel">
-            <span className="SwitchBtn"></span>
-          </label>
-        </div>
-        <p>팀번호 순으로 보기</p>
-      </div>
       <div className="ClassGridWrapper">
         {projects.map((project) => {
           return <Grid project={project} key={project.project_id} />;
