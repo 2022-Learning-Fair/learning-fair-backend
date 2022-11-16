@@ -17,7 +17,7 @@ app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 
 #테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=20)
 
 
 @app.route('/')
@@ -188,7 +188,7 @@ def class_list():
         class_project_list_db_result_rand = cur.fetchall()
         
     class_project_list_json = {"projects":[],"projectsRand":[]}
-    
+
     for class_project in class_project_list_db_result:
         project_container = {
             "team_name":class_project[0], 
@@ -221,7 +221,6 @@ def class_list():
         }
         
         class_project_list_json["projectsRand"].append(project_container_rand)
-
     return jsonify(class_project_list_json)
 
 @app.route('/api/tag')
@@ -234,8 +233,8 @@ def tag_list():
 
     tag_name = request.args.get('tag')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_name}'"""
-    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_name}' ORDER BY RAND()"""
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c, project_name,like_cnt,project_thumbnail_url,project_id FROM project WHERE hashtag_main = '{tag_name}'"""
+    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c, project_name,like_cnt,project_thumbnail_url,project_id FROM project WHERE hashtag_main = '{tag_name}' ORDER BY RAND()"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
@@ -247,7 +246,6 @@ def tag_list():
     
 
     tag_project_list_json = {"projects":[], "projectsRand":[]}
-
     for tag_project in tag_project_list_db_result:
         tagproject_container = {
             "team_name":tag_project[0], 
@@ -281,7 +279,6 @@ def tag_list():
         }
 
         tag_project_list_json["projectsRand"].append(tagproject_container_rand)
-
     return jsonify(tag_project_list_json)
 
 @app.route('/api/project/<int:id>')

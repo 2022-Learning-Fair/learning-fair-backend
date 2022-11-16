@@ -66,6 +66,7 @@ const Layout = () => {
             <Route path="/awards" element={<Awards />} />
             <Route path="/congrats" element={<Congrats />} />
             <Route path="/tag" element={<Tag />} />
+            <Route path="/tag/:tagId" element={<Tag />} />
             <Route path="/class/:classId" element={<Class />} />
             <Route path="/project/:projectId" element={<Project />} />
             <Route path="*" element={<Main />} />

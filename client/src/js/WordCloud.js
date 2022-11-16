@@ -42,14 +42,14 @@ function WordCloud() {
     }, []);
     var w=window.innerWidth, h=window.innerHeight;
     const size = useMemo(() => {
-        if(window.matchMedia("(max-width:768px)").matches) return [window.innerWidth*0.8,window.innerHeight*0.7];
+        if(window.matchMedia("(max-width:768px)").matches) return [window.innerWidth*0.7,window.innerHeight*0.6];
         return [900, 650];
     }, []);
     const words = useMemo(() => {
         return [
             {
                 text: "편의/도구",
-                value: 172
+                value: 178
             },
             {
                 text: "취업",
@@ -61,11 +61,11 @@ function WordCloud() {
             },
             {
                 text: "게임",
-                value: 40
+                value: 42
             },
             {
                 text: "패션",
-                value: 24
+                value: 25
             },
             {
                 text: "환경",
@@ -81,7 +81,7 @@ function WordCloud() {
             },
             {
                 text: "운동/스포츠",
-                value: 30
+                value: 22
             },
             {
                 text: "요리",
@@ -89,7 +89,7 @@ function WordCloud() {
             },
             {
                 text: "교육",
-                value: 36
+                value: 37
             },
             {
                 text: "영화/도서",
@@ -97,11 +97,11 @@ function WordCloud() {
             },
             {
                 text: "생활",
-                value: 118
+                value: 121
             },
             {
                 text: "AI",
-                value: 10
+                value: 14
             },
             {
                 text: "여행",
@@ -109,7 +109,7 @@ function WordCloud() {
             },
             {
                 text: "힐링",
-                value: 6
+                value: 7
             },
             {
                 text: "비즈니스",
@@ -121,11 +121,11 @@ function WordCloud() {
             },
             {
                 text: "쇼핑",
-                value: 9
+                value: 10
             },
             {
                 text: "지도",
-                value: 29
+                value: 30
             },
             {
                 text: "창작",
@@ -137,7 +137,7 @@ function WordCloud() {
             },
             {
                 text: "컴퓨팅",
-                value: 3
+                value: 4
             },
             {
                 text: "보안",
