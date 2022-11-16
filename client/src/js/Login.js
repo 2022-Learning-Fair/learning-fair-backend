@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Login() {
+  const loginCheckJson = {
+    token: localStorage.getItem("login-token"),
+    name: localStorage.getItem("login-name")
+  };
   const navigate = useNavigate();
 
   const [radioValue, setRadioValue] = useState("재학생");
@@ -32,6 +36,33 @@ function Login() {
     setStudentId("");
     setMajor("");
   }
+
+  async function login_check_api(loginCheckreqJson) {
+    try {
+      const response = await axios.post(
+        "/api/session-check",
+        JSON.stringify(loginCheckreqJson),
+        {
+          headers: {
+            "Content-Type": `application/json`
+          }
+        }
+      );
+
+      if (response["data"]["session"] === "active") {
+        console.log("You already login");
+        navigate("/main");
+      }
+
+      
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  login_check_api(loginCheckJson);
+
+  //-----------로그인 체크 완료------------------
 
   async function login_api(submitValue) {
     try {

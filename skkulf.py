@@ -23,10 +23,8 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
 @app.route('/')
 def index():
     if 'User_name' in session:
-        global like_button
-        like_button = 0
-        return '로그인 성공! 아이디는 %s' % escape(session['User_name']) + \
-            "<br><a href = '/logout'>로그아웃</a>"
+        print("why!!")
+        return jsonify({"state": "already_login"})
 
     return lfmodules.template(lfmodules.getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
 
@@ -34,17 +32,14 @@ def index():
 
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET': 
-        content = '''
-            <form action="/login" method="POST">
-                <p><input type="number" name="Student_ID" placeholder="Student_ID"></p>
-                <p><input type="text" name="User_name" placeholder="User_name"></p>
-                <p><input type="text" name="User_major" placeholder="User_major"></p>
-                <p><input type="submit" value="로그인"></p>
-            </form>
-        '''
-        return lfmodules.template(lfmodules.getContents(), content)
+    if request.method == 'GET':
+        if 'User_name' in session:
+            print("why!!")
+            return jsonify({"state": "already_login"})
+        return jsonify({"state" : "no_login"})
+    
     elif request.method == 'POST':
+
         sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type, user_token) VALUES (%s, %s, %s, %s, %s, %s)"
 
         user_json = request.get_json()
@@ -74,7 +69,12 @@ def login():
         
         session[User_token] = user_id_db_result[0][0]
         session[str(user_id_db_result[0][0])] = User_name
-        print(user_id_db_result[0][0])
+        session['User_id'] = user_id_db_result[0][0]
+
+        if User_name in session:
+            print("why!!")
+            return jsonify({"state": "already_login"})
+
         return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0], "user_name":User_name})
 
 
@@ -85,6 +85,7 @@ def session_check():
     session_check_json = request.get_json()
 
     print(session_check_json)
+    print(session)
     print(session_check_json['name'])
 
     if session_check_json['token'] in session:
@@ -262,88 +263,101 @@ def project(id):
     body = Project[0][10]
     return lfmodules.template(lfmodules.getContents(), f'<h2>{title}</h2>{body}')
 
-@app.route('/api/project/<int:project_id>/like')
-def likes_project(project_id):
-    us_id = session['User_id']
+@app.route('/api/project/<int:pj_id>/like', methods=['POST'])
+def like_project(pj_id):
+    like_request_json = request.get_json()
+    
     conn = pymysql.connect(host=os.environ.get('DB_URL'),
                        user=os.environ.get('DB_USER'),
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    likesql = f"""SELECT EXISTS(SELECT * FROM like_table
-                  WHERE project_id = {project_id} AND
-                  user_id = {us_id}) AS t"""
-                  
-    with conn.cursor() as cur:
-        cur.execute(likesql)
-        like_button = cur.fetchall()
-        like_button = like_button[0][0]
-        conn.commit()
-        
-    if like_button == 0:
-        likeup= f"""
-                UPDATE project
-                set like_cnt = like_cnt + 1
-                where project_id = {project_id}
-                """
-        liketable= f"""
-                   INSERT into like_table
-                   (user_id, project_id) VALUES
-                   ({us_id}, {project_id})
-                   """
-        likecnts = f"""
-                   SELECT like_cnt
-                   FROM project
-                   where project_id = {project_id}
-                   """
-                   
+    
+    #us_id = session['User_id']
+
+    if like_request_json['token'] in session:
+        us_id = session[like_request_json['token']]
+
+        likesql = f"""SELECT EXISTS(SELECT * FROM like_table
+                    WHERE project_id = {pj_id} AND
+                    user_id = {us_id}) AS t"""
+                    
         with conn.cursor() as cur:
-            cur.execute(likeup)
-            cur.execute(liketable)
+            cur.execute(likesql)
+            like_button = cur.fetchall()
+            like_button = like_button[0][0]
             conn.commit()
             
-        with conn.cursor() as cur:
-            cur.execute(likecnts)
-            like_data = cur.fetchall()
-            like_data = like_data[0][0]
-            conn.commit()
-        like_button = True
-        like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
-        
-        return jsonify(like_info_json)
-    
-    else :
-        likeup= f"""
-                UPDATE project
-                set like_cnt = like_cnt - 1
-                where project_id = {project_id}
-                """
-        liketable= f"""
-                   DELETE from like_table
-                   WHERE user_id = {us_id}
-                   AND project_id = {project_id}
-                   """
-        likecnts = f"""
-                   SELECT like_cnt
-                   FROM project
-                   where project_id = {project_id}
-                   """
-        with conn.cursor() as cur:
-            cur.execute(likeup)
-            cur.execute(liketable)
-            conn.commit()
-        
-        with conn.cursor() as cur:
-            cur.execute(likecnts)
-            like_data = cur.fetchall()
-            like_data = like_data[0][0]
-            conn.commit()
-        like_button = False
-        like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
-        
-        return jsonify(like_info_json)
+        if like_button == 0:
+            likeup= f"""
+                    UPDATE project
+                    set like_cnt = like_cnt + 1
+                    WHERE project_id = {pj_id}
+                    """
+            liketable= f"""
+                    INSERT into like_table
+                    (user_id, project_id) VALUES
+                    ({us_id}, {pj_id})
+                    """
+            likecnts = f"""
+                    SELECT like_cnt
+                    FROM project
+                    WHERE project_id = {pj_id}
+                    """
+                    
+            with conn.cursor() as cur:
+                cur.execute(likeup)
+                cur.execute(liketable)
+                conn.commit()
+                
+            with conn.cursor() as cur:
+                cur.execute(likecnts)
+                like_data = cur.fetchall()
+                like_data = like_data[0][0]
+                conn.commit()
 
-@app.route('/logout')
+            like_button = True
+            like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+            
+            #return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
+            return jsonify(like_info_json)
+        
+        else :
+            likeup= f"""
+                    UPDATE project
+                    set like_cnt = like_cnt - 1
+                    WHERE project_id = {pj_id}
+                    """
+            liketable= f"""
+                    DELETE from like_table
+                    WHERE user_id = {us_id}
+                    AND project_id = {pj_id}
+                    """
+            likecnts = f"""
+                    SELECT like_cnt
+                    FROM project
+                    WHERE project_id = {pj_id}
+                    """
+            with conn.cursor() as cur:
+                cur.execute(likeup)
+                cur.execute(liketable)
+                conn.commit()
+            
+            with conn.cursor() as cur:
+                cur.execute(likecnts)
+                like_data = cur.fetchall()
+                like_data = like_data[0][0]
+                conn.commit()
+            like_button = False
+            like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+            
+            #return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
+    else:
+        like_info_json = {"likeinfo":"session-out"}
+
+    return jsonify(like_info_json)
+
+@app.route('/api/logout')
 def logout():
     session.pop('User_name', None)
     return redirect(url_for('index'))

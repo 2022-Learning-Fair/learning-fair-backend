@@ -45,6 +45,7 @@ def login():
         '''
         return lfmodules.template(lfmodules.getContents(), content)
     elif request.method == 'POST':
+        
         sql = "INSERT INTO user (user_name, user_student_number, user_major, user_login_time, user_type, user_token) VALUES (%s, %s, %s, %s, %s, %s)"
 
         user_json = request.get_json()
@@ -75,7 +76,8 @@ def login():
         session[User_token] = user_id_db_result[0][0]
         session[str(user_id_db_result[0][0])] = User_name
         print(user_id_db_result[0][0])
-        return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
+        return lfmodules.template(lfmodules.getContents(), content)
+        #return jsonify({"login":"success","token":User_token,"user_id":user_id_db_result[0][0]})
 
 
 

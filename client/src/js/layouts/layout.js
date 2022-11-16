@@ -11,7 +11,6 @@ import Congrats from "../Congrats";
 import Tag from "../Tag";
 import Class from "../Class";
 import Project from "../Project";
-import WordCloud from "../WordCloud";
 
 const Layout = () => {
   const sessionCheckJson = {
@@ -42,30 +41,6 @@ const Layout = () => {
       console.log(e);
     }
   }
-
-  async function login_check_api(sessionChkJson) {
-    try {
-      const response = await axios.post(
-        "/api/session-check",
-        JSON.stringify(sessionChkJson),
-        {
-          headers: {
-            "Content-Type": `application/json`
-          }
-        }
-      );
-
-      if (response["data"]["session"] === "active") {
-        console.log("You already login");
-        navigate("/main");
-      }
-
-      
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
 
   console.log(localStorage.getItem("login-token"));
   useEffect(() => {
