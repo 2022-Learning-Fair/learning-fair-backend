@@ -10,3 +10,11 @@
   font-weight: bold;
   color: #fff;
 }
+@media(max-width:768px){
+  .headerWelcome{
+      margin-left:30px;
+  }
+  .headerWelcome p{
+    overflow:hidden;
+  }
+}

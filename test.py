@@ -167,25 +167,58 @@ def testjson():
     print(session['User_token'])
     return jsonify({"test":"hello"})
 
-@app.route('/tag')
-def tag():
-    tag = request.args.get('tag')
-    if tag == None :
-        content = '''
-        <form action="/tag">
-        <ol>
-        <li><a href="?tag=1">운동</a></li>
-        <li><a href="?tag=2">애니메이션</a></li>
-        <li><a href="?tag=3">신입생</a></li>
-        </ol>
-        </form>
-        '''
-        return template(getContents(), content)
-    else :
-        content = f'''
-        <h1>tag가 {tag}인 경우 데이터임.</h1>
-        '''
-        return templates(getTagContents(tag), content)
+@app.route('/tag/')
+def tag_list():
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
+
+    tag_name = request.args.get('tag')
+
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_name}'"""
+    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_name}' ORDER BY RAND()"""
+
+    with conn.cursor() as cur:
+        cur.execute(sql)
+        tag_project_list_db_result = cur.fetchall()
+    
+    with conn.cursor() as cur:
+        cur.execute(sql_)
+        tag_project_list_db_result_rand = cur.fetchall()
+    
+
+    tag_project_list_json = {"projects":[], "projectsRand":[]}
+
+    for tag_project in tag_project_list_db_result:
+        project_container = {
+            "team_name":tag_project[0], 
+            "team_member":tag_project[1], 
+            "team_number":tag_project[2], 
+            "hashtag_main":tag_project[3], 
+            "hashtag_custom_a":tag_project[4], 
+            "hashtag_custom_b":tag_project[5], 
+            "hashtag_custom_c":tag_project[6],
+        }
+
+        tag_project_list_json["projects"].append(project_container)
+    
+    for tag_project in tag_project_list_db_result_rand:
+        project_container_rand = {
+            "team_name":tag_project[0], 
+            "team_member":tag_project[1], 
+            "team_number":tag_project[2], 
+            "hashtag_main":tag_project[3], 
+            "hashtag_custom_a":tag_project[4], 
+            "hashtag_custom_b":tag_project[5], 
+            "hashtag_custom_c":tag_project[6],
+        }
+
+        tag_project_list_json["projectsRand"].append(project_container_rand)
+    print(tag_project_list_json)
+    return template(getContents(), f'<h2>태그별</h2>{tag_project_list_json}')
+    #return jsonify(tag_project_list_json)
 
 @app.route('/class/')
 def class_():
