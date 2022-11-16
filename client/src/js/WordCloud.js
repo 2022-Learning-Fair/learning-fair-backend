@@ -13,6 +13,19 @@ function WordCloud() {
         }
     }, []);
     const options = useMemo(() => {
+        if(window.matchMedia("(max-width:768px)").matches) return{
+            enableTooltip: true,
+            deterministic: false,
+            fontFamily: "헤드라인",
+            fontSizes: [20, 80],
+            fontStyle: "normal",
+            fontWeight: "900",
+            padding: 2,
+            rotations: 2,
+            rotationAngles: [0, 90],
+            scale: "log",
+            spiral: "rectangular"
+        }
         return {
             enableTooltip: true,
             deterministic: false,
@@ -27,7 +40,9 @@ function WordCloud() {
             spiral: "rectangular"
         }
     }, []);
+    var w=window.innerWidth, h=window.innerHeight;
     const size = useMemo(() => {
+        if(window.matchMedia("(max-width:768px)").matches) return [window.innerWidth*0.8,window.innerHeight*0.7];
         return [900, 650];
     }, []);
     const words = useMemo(() => {
