@@ -5,14 +5,14 @@
   font-style: normal;
 }
 
-Main {
+word-cloud {
   font-family: '강원교육튼튼';
-  overflow: hidden;
+  color: #000000;
 }
 
 .WordCloudPage {
-  background-color: #fffffff9;
-  border-radius: 10px;
+  background-color: #fffff9e6;
+  border-radius: 5px;
   height: 700px;
   display: flex;
   position: relative;
