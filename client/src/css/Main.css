@@ -25,3 +25,17 @@ word-cloud {
   display: flex;
   position: relative;
 }
+
+@media(max-width:768px){
+  .WordCloudPage{
+    margin-left:5%;
+    margin-right:5%;
+    height:auto;
+    width: auto;
+  }
+  .WordCloud{
+    margin:0;
+    align-items:center;
+    align-content:center;
+  }
+}

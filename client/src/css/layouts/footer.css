@@ -22,3 +22,17 @@
   justify-content: center;
   margin: 3px;
 }
+@media(max-width:768px){
+  .footerWrapper{
+    margin-top:auto;
+  }
+  .copyright *{
+    font-size:13px;
+  }
+  p{
+    overflow: hidden;
+  }
+  footer{
+    position:relative;
+  }
+}
