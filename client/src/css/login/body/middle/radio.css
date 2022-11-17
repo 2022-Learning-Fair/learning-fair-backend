@@ -58,6 +58,7 @@
       padding:10px auto;
       font-size:10pt;
       top:0px;
+      white-space:nowrap;
   }
   .radioInput{
       width:auto;

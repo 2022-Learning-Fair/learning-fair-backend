@@ -55,11 +55,16 @@
     margin-left:15px;
     margin-right:15px;
     h2{
-      font-size:25pt;
+      font-size:20pt;
     }
   }
   .ProjectInfoWrapper{
     max-height:100%;
+  }
+  #ProjectHashtag span{
+    width:auto;
+    height:auto;
+    overflow:hidden;
   }
   
 }

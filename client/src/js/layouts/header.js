@@ -163,7 +163,8 @@ const Header = () => {
       
       <div className="headerWelcome">
         <p>
-          <span id="user">{userName}</span>님, 환영합니다!
+          <span id="user">{userName}</span>님, 
+          <span id="welcome">환영합니다!</span>
         </p>
       </div>
     </header>

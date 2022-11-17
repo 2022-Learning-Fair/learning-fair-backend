@@ -51,6 +51,13 @@ function Congrats() {
         console.log(error);
       });
   }, []);
+  
+  var prime_w=500, prime_h=250;
+  var second_w=450, second_h=250;
+  if(window.matchMedia("(max-width:768px)").matches) {
+    prime_w=second_w=400;
+    prime_h=second_h=200;
+  }
 
   return (
     <div className="Congrats">
@@ -60,8 +67,8 @@ function Congrats() {
           <embed
             type="video/webm"
             src={URLs.sw_dean}
-            width="500"
-            height="250"
+            width={prime_w}
+            height={prime_h}
           />
         </div>
         <div className="second" id="second">
@@ -69,8 +76,8 @@ function Congrats() {
           <embed
             type="video/webm"
             src={URLs.president}
-            width="450"
-            height="250"
+            width={second_w}
+            height={second_h}
           />
         </div>
         <div className="second">
@@ -82,8 +89,8 @@ function Congrats() {
           <embed
             type="video/webm"
             src={URLs.ds_dean}
-            width="450"
-            height="250"
+            width={second_w}
+            height={second_h}
           />
         </div>
       </div>

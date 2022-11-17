@@ -285,7 +285,9 @@
   .button{
     --text:white;
     color:#004b1a;
-    font-size:11pt;    
+    font-size:11pt;
+    white-space: nowrap;
+    animation:none;
   }
   .button span{
     overflow:hidden;
@@ -293,5 +295,9 @@
   .button span:hover{
     transform:none;
     overflow: hidden;
+  }
+  .button {
+    transition:none;
+    transform:none;
   }
 }
