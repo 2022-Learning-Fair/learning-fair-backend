@@ -17,7 +17,10 @@ app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 
 #테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=20)
+#app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=20)
+
+#이 값을 조정해서 세션 지속 시간 결정
+session_duration_seconds = 60
 
 
 @app.route('/')
@@ -67,9 +70,9 @@ def login():
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
         
-        session[User_token] = user_id_db_result[0][0]
-        session[str(user_id_db_result[0][0])] = User_name
-        session['User_id'] = user_id_db_result[0][0]
+        #session[User_token] = user_id_db_result[0][0]
+        #session[str(user_id_db_result[0][0])] = User_name
+        #session['User_id'] = user_id_db_result[0][0]
 
         if User_name in session:
             print("why!!")
@@ -81,17 +84,45 @@ def login():
 
 @app.route('/api/session-check', methods=['POST'])
 def session_check():
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
 
     session_check_json = request.get_json()
 
-    print(session_check_json)
-    print(session)
-    print(session_check_json['name'])
+    #print(session_check_json)
+    #print(session)
+    #print(session_check_json['name'])
 
+    sql = f"""SELECT user_login_time FROM user WHERE user_token = '{session_check_json['token']}'"""
+
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    session_check_db_result = cur.fetchall()
+
+    if len(session_check_db_result) > 0:
+        cal_time_delta = datetime.datetime.now() - session_check_db_result[0][0]
+        #print(datetime.datetime.now())
+        #print(session_check_db_result[0][0])
+        #print(cal_time_delta.seconds)
+
+    global session_duration_seconds
+    if len(session_check_db_result) > 0:
+        if cal_time_delta.seconds <= session_duration_seconds:
+            return jsonify({"session":"active", "user_name":session_check_json['name']})
+        else:
+            return jsonify({"session":"deactive"})
+    else:
+        return jsonify({"session":"deactive"})
+
+    '''
     if session_check_json['token'] in session:
         return jsonify({"session":"active", "user_name":session_check_json['name']})
     else:
         return jsonify({"session":"deactive"})
+    '''
 
 
 
@@ -298,12 +329,28 @@ def like_project(pj_id):
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
 
-    if like_request_json['token'] in session:
-        us_id = session[like_request_json['token']]
+    #if like_request_json['token'] in session:
+    #    us_id = session[like_request_json['token']]
+
+    sessionsql = f"""SELECT user_id, user_login_time FROM user WHERE user_token = '{like_request_json['token']}'"""
+
+    with conn.cursor() as cur:
+        cur.execute(sessionsql)
+    session_check_db_result = cur.fetchall()
+
+    print(session_check_db_result[0][0])
+    print(session_check_db_result[0][1])
+
+    if len(session_check_db_result) > 0:
+        cal_time_delta = datetime.datetime.now() - session_check_db_result[0][1]
+    
+    global session_duration_seconds
+    if len(session_check_db_result) > 0 and cal_time_delta.seconds <= session_duration_seconds:
+        us_id = session_check_db_result[0][1]
 
         likesql = f"""SELECT EXISTS(SELECT * FROM like_table
-                    WHERE project_id = {pj_id} AND
-                    user_id = {us_id}) AS t"""
+                    WHERE project_id = '{pj_id}' AND
+                    user_id = '{us_id}') AS t"""
                     
         with conn.cursor() as cur:
             cur.execute(likesql)
@@ -315,17 +362,17 @@ def like_project(pj_id):
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt + 1
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
             liketable= f"""
                     INSERT into like_table
                     (user_id, project_id) VALUES
-                    ({us_id}, {pj_id})
+                    ('{us_id}', '{pj_id}')
                     """
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
                     
             with conn.cursor() as cur:
@@ -348,17 +395,17 @@ def like_project(pj_id):
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt - 1
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
             liketable= f"""
                     DELETE from like_table
-                    WHERE user_id = {us_id}
-                    AND project_id = {pj_id}
+                    WHERE user_id = '{us_id}'
+                    AND project_id = '{pj_id}'
                     """
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
             with conn.cursor() as cur:
                 cur.execute(likeup)
