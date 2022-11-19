@@ -64,21 +64,11 @@ function Congrats() {
       <div className="CongratsWrapper">
         <div className="first">
           <p>총장님</p>
-          <embed
-            type="video/webm"
-            src={URLs.sw_dean}
-            width={prime_w}
-            height={prime_h}
-          />
-        </div>
+          <iframe width={prime_w} height={prime_h} src={URLs.president} title="President Congrats"></iframe>    
+        </div>      
         <div className="second" id="second">
           <p id="sw">SW융합대학장님</p>
-          <embed
-            type="video/webm"
-            src={URLs.president}
-            width={second_w}
-            height={second_h}
-          />
+          <iframe width={second_w} height={second_h} src={URLs.sw_dean} title="SW dean Congrats"></iframe> 
         </div>
         <div className="second">
           <p>
@@ -86,12 +76,7 @@ function Congrats() {
             <br />
             /학부대학장님
           </p>
-          <embed
-            type="video/webm"
-            src={URLs.ds_dean}
-            width={second_w}
-            height={second_h}
-          />
+          <iframe width={second_w} height={second_h} src={URLs.ds_dean} title="DS dean Congrats"></iframe> 
         </div>
       </div>
     </div>
