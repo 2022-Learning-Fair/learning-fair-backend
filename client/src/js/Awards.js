@@ -5,8 +5,8 @@ import { useEffect} from "react";
 
 function Awards() {
   const sessionCheckJson = {
-    token: localStorage.getItem("login-token"),
-    name: localStorage.getItem("login-name")
+    token: sessionStorage.getItem("login-token"),
+    name: sessionStorage.getItem("login-name")
   };
   const navigate = useNavigate();
 

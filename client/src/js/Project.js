@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 function Project() {
   const sessionCheckJson = {
-    token: localStorage.getItem("login-token"),
-    name: localStorage.getItem("login-name")
+    token: sessionStorage.getItem("login-token"),
+    name: sessionStorage.getItem("login-name")
   };
   const navigate = useNavigate();
 
@@ -40,8 +40,8 @@ function Project() {
   //-----------세션 체크 완료------------------
 
   const loginCheckJson = {
-    token: localStorage.getItem("login-token"),
-    name: localStorage.getItem("login-name")
+    token: sessionStorage.getItem("login-token"),
+    name: sessionStorage.getItem("login-name")
   };
 
   const project = useRef("");

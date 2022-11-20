@@ -9,8 +9,8 @@ import axios from "axios";
 
 function Login() {
   const loginCheckJson = {
-    token: localStorage.getItem("login-token"),
-    name: localStorage.getItem("login-name")
+    token: sessionStorage.getItem("login-token"),
+    name: sessionStorage.getItem("login-name")
   };
   const navigate = useNavigate();
 
@@ -71,8 +71,8 @@ function Login() {
           "Content-Type": `application/json`
         }
       });
-      localStorage.setItem("login-token", response.data.token);
-      localStorage.setItem("login-name", response.data.user_name);
+      sessionStorage.setItem("login-token", response.data.token);
+      sessionStorage.setItem("login-name", response.data.user_name);
       navigate("/main");
     } catch (e) {
       console.log(e);
