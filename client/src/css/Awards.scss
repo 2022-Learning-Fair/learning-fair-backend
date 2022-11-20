@@ -50,25 +50,25 @@ h1 {
   }
 }
 
-@media(max-width:768px){
-  html{
-    overflow-y:scroll;
+@media (max-width: 500px) {
+  html {
+    overflow-y: scroll;
   }
-  .Awards{
-    margin-left:5%;
-    margin-right:5%;
-    height:400px;
+  .Awards {
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 400px;
   }
-  h1{
-    font-size:80px;
-    line-height:130%;
-    width:auto;
-    height:auto;
-    margin-top:-5%;
-    overflow-y:hidden;
+  h1 {
+    font-size: 80px;
+    line-height: 130%;
+    width: auto;
+    height: auto;
+    margin-top: -5%;
+    overflow-y: hidden;
   }
-  .AwardsWrapper{
-    width:auto;
-    height:auto;
+  .AwardsWrapper {
+    width: auto;
+    height: auto;
   }
 }

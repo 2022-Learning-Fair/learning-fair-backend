@@ -7,12 +7,12 @@
   margin: 100px 0;
 }
 
-@media (max-width: 768px){
-  .Login{
+@media (max-width: 500px) {
+  .Login {
     width: auto;
     height: auto;
   }
-  body{
+  body {
     width: auto;
     height: auto;
   }

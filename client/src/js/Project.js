@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../css/Project.scss";
 import axios from "axios";
@@ -13,11 +13,11 @@ function Project() {
   };
   const navigate = useNavigate();
 
-  async function session_check_api(sessionChkreqJson) {
+  async function session_check_api(sessionCheckJson) {
     try {
       const response = await axios.post(
         "/api/session-check",
-        JSON.stringify(sessionChkreqJson),
+        JSON.stringify(sessionCheckJson),
         {
           headers: {
             "Content-Type": `application/json`
@@ -46,7 +46,7 @@ function Project() {
 
   const project = useRef("");
   const click = useRef(false);
-
+  const [like, setLike] = useState(0);
   async function project_info_api(projectInfoReqJson) {
     try {
       const response = await axios.post(
@@ -77,7 +77,7 @@ function Project() {
 
         like_cnt: data.like_cnt
       };
-      click.current = false;
+      setLike(project.current.like_cnt);
     } catch (e) {
       console.log(e);
     }
@@ -101,6 +101,7 @@ function Project() {
         const likeInfo = response.data.likeinfo[0];
         click.current = likeInfo.like_button;
         project.current.like_cnt = likeInfo.like_cnt;
+        setLike(likeInfo.like_cnt);
       }
     } catch (e) {
       console.log(e);
@@ -134,7 +135,7 @@ function Project() {
           >
             <div>
               <span className="material-symbols-outlined">favorite</span>
-              {project.current.like_cnt}
+              {like}
             </div>
           </button>
           <p id="ProjectHashtag">

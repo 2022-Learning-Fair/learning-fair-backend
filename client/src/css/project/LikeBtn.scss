@@ -77,21 +77,21 @@ $pink-shadow: #ffe3e2;
   }
 }
 
-@media(max-width:768px){
-  #ProjectLike{
-    width:70px;
-    height:35px;
-    font-size:11pt;
-    padding-right:0;
-    padding-top:3px;
-    &::before{
-      display:none;
+@media (max-width: 500px) {
+  #ProjectLike {
+    width: 70px;
+    height: 35px;
+    font-size: 11pt;
+    padding-right: 0;
+    padding-top: 3px;
+    &::before {
+      display: none;
     }
   }
-  #ProjectLike *{
-    overflow-y:hidden;
+  #ProjectLike * {
+    overflow-y: hidden;
   }
-  .material-symbols-outlined{
-    padding-right:0;
+  .material-symbols-outlined {
+    padding-right: 0;
   }
 }

@@ -22,17 +22,17 @@
   justify-content: center;
   margin: 3px;
 }
-@media(max-width:768px){
-  .footerWrapper{
-    margin-top:auto;
+@media (max-width: 500px) {
+  .footerWrapper {
+    margin-top: auto;
   }
-  .copyright *{
-    font-size:13px;
+  .copyright * {
+    font-size: 13px;
   }
-  p{
+  p {
     overflow: hidden;
   }
-  footer{
-    position:relative;
+  footer {
+    position: relative;
   }
 }
