@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../css/Project.scss";
 import axios from "axios";
@@ -26,7 +26,6 @@ function Project() {
       );
 
       if (response["data"]["session"] === "deactive") {
-        console.log("You need to login in!");
         navigate("/");
       }
     } catch (e) {
@@ -46,7 +45,6 @@ function Project() {
   };
 
   const project = useRef("");
-  const [like_show, setLike] = useState(0);
   const click = useRef(false);
 
   async function project_info_api(projectInfoReqJson) {
@@ -79,9 +77,7 @@ function Project() {
 
         like_cnt: data.like_cnt
       };
-      setLike(project.current.like_cnt);
       click.current = false;
-      console.log(click.current, like_show);
     } catch (e) {
       console.log(e);
     }
@@ -100,16 +96,11 @@ function Project() {
       );
 
       if (response["data"]["likeinfo"] === "session-out") {
-        console.log("You need to login in!");
         navigate("/");
       } else {
-        const likeInfo = response.data.likeinfo;
-        click.current = likeInfo.isClicked;
-        setLike(likeInfo.like_cnt);
+        const likeInfo = response.data.likeinfo[0];
+        click.current = likeInfo.like_button;
         project.current.like_cnt = likeInfo.like_cnt;
-        console.log(likeInfo);
-        console.log(like_show, project.current.like_cnt);
-        console.log(likeInfo.isClicked, click.current);
       }
     } catch (e) {
       console.log(e);

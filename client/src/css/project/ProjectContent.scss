@@ -13,7 +13,7 @@
 }
 #ProjectPDF {
   grid-area: pdf;
-  margin-top:-60px;
+  height: 110%;
 }
 .ProjectContent {
   padding: 30px 0;
@@ -27,38 +27,38 @@
 }
 
 .ProjectPDF {
-  margin-top:5%;
+  margin-top: 5%;
   width: 100%;
-  height:80%; 
+  height: 80%;
 }
 
-@media(max-width:768px){
-  .ProjectPDF{
-    width:90%;
-    height:60%;
-    margin-left:5%;
-    margin-right:5%;
-    overflow:scroll;
+@media (max-width: 768px) {
+  .ProjectPDF {
+    width: 90%;
+    height: 60%;
+    margin-left: 5%;
+    margin-right: 5%;
+    overflow: scroll;
   }
-  .ProjectContent p{
-    font-size:20pt;
-    margin-left:5%;
+  .ProjectContent p {
+    font-size: 20pt;
+    margin-left: 5%;
   }
-  .ProjectContent{
-    width:auto;
-    height:auto;
+  .ProjectContent {
+    width: auto;
+    height: auto;
   }
-  #ProjectYoutube{
-    margin-left:5%;
-    margin-right:5%;
+  #ProjectYoutube {
+    margin-left: 5%;
+    margin-right: 5%;
   }
-  #ProjectYoutube p{
-    margin-left:0;
+  #ProjectYoutube p {
+    margin-left: 0;
   }
-  #ProjectPDF p{
-    margin-top:5%;
+  #ProjectPDF p {
+    margin-top: 5%;
   }
-  span{
-    margin-left:5%;
+  span {
+    margin-left: 5%;
   }
 }

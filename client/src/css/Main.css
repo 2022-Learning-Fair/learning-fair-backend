@@ -1,15 +1,3 @@
-@font-face {
-  font-family: '강원교육튼튼';
-  src: url('../font/강원교육튼튼.ttf') format('ttf');
-  font-weight: normal;
-  font-style: normal;
-}
-
-word-cloud {
-  font-family: '강원교육튼튼';
-  color: #000000;
-}
-
 .WordCloudPage {
   background-color: #fffff9e6;
   border-radius: 5px;
@@ -26,17 +14,17 @@ word-cloud {
   position: relative;
 }
 
-@media(max-width:768px){
-  .WordCloudPage{
-    margin-left:5%;
-    margin-right:5%;
-    height:auto;
+@media (max-width: 768px) {
+  .WordCloudPage {
+    margin-left: 5%;
+    margin-right: 5%;
+    height: auto;
     width: auto;
-    margin-bottom:100px;
+    margin-bottom: 100px;
   }
-  .WordCloud{
-    margin:0;
-    align-items:center;
-    align-content:center;
+  .WordCloud {
+    margin: 0;
+    align-items: center;
+    align-content: center;
   }
 }

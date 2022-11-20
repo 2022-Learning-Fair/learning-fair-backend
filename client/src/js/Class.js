@@ -28,8 +28,6 @@ function Class() {
         console.log("You need to login in!");
         navigate("/");
       }
-
-      
     } catch (e) {
       console.log(e);
     }
@@ -40,7 +38,6 @@ function Class() {
   }, []);
 
   //-----------세션 체크 완료------------------
-
 
   const classId = useParams().classId;
   const [projects, setprojects] = useState([]);
@@ -86,7 +83,9 @@ function Class() {
       </div>
       <div className="ClassGridWrapper">
         {projects.map((project) => {
-          return <Grid project={project} key={project.project_id} />;
+          return (
+            <Grid project={project} key={`projectId${project.project_id}`} />
+          );
         })}
       </div>
     </div>

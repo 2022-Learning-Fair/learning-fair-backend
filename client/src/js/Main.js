@@ -3,7 +3,7 @@ import WordCloud from "./WordCloud";
 import "../css/Main.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useEffect} from "react";
+import { useEffect } from "react";
 
 function Main() {
   const sessionCheckJson = {
@@ -25,11 +25,8 @@ function Main() {
       );
 
       if (response["data"]["session"] === "deactive") {
-        console.log("You need to login in!");
         navigate("/");
       }
-
-      
     } catch (e) {
       console.log(e);
     }

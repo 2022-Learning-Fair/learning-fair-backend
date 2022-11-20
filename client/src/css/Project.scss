@@ -1,6 +1,6 @@
 .Project {
   background-color: #edfeedd3;
-  height: 1150px;
+  height: auto;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
@@ -8,11 +8,11 @@
   justify-items: center;
 }
 
-@media(max-width:768px){
-  .Project{
-      margin-left:5%;
-      margin-right:5%;
-      overflow-y:hidden;
+@media (max-width: 768px) {
+  .Project {
+    margin-left: 5%;
+    margin-right: 5%;
+    overflow-y: hidden;
   }
 }
 

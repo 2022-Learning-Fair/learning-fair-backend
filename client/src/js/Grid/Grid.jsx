@@ -8,7 +8,6 @@ function Grid({ project }) {
       className="Grid"
       id={`projectId${project.project_id}`}
       onClick={() => {
-        console.log(`/project/${project.project_id}`);
         navigate(`/project/${project.project_id}`);
       }}
     >
