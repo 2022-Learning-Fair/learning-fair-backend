@@ -58,20 +58,22 @@ function Congrats() {
     prime_w=second_w=400;
     prime_h=second_h=200;
   }
-  var p_src=URLs.president+"?autoplay=0&autopause=1";
-  var sw_src=URLs.sw_dean+"?autoplay=0&autopause=1";
-  var ds_src=URLs.ds_dean+"?autoplay=0&autopause=1";
+  var p_src=URLs.president+"#t=0.5";
+  var sw_src=URLs.sw_dean+"#t=0.5";
+  var ds_src=URLs.ds_dean+"#t=0.5";
 
   return (
     <div className="Congrats">
       <div className="CongratsWrapper">
         <div className="first">
+          <span className="warning">* 영상 로딩이 완료될 때까지 조금만 기다려주세요. </span>
+          <br/>
           <p>총장님</p>
-          <video controls nofullscreen width={prime_w} height={prime_h} src={p_src} title="President Congrats" ></video>
+          <video controls preload="metadata" autoplay muted playsInline width={prime_w} height={prime_h} src={p_src} title="President Congrats" ></video>
         </div>      
         <div className="second" id="second">
           <p id="sw">SW융합대학장님</p>
-          <video controls width={second_w} height={second_h} src={sw_src} title="SW dean Congrats"></video>
+          <video controls preload="metadata" autoplay muted playsInline width={second_w} height={second_h} src={sw_src} title="SW dean Congrats"></video>
         </div>
         <div className="second">
           <p>
@@ -79,7 +81,7 @@ function Congrats() {
             <br />
             /학부대학장님
           </p>
-          <video controls width={second_w} height={second_h} src={ds_src} title="DS dean Congrats"></video> 
+          <video controls preload="metadata" autoplay muted playsInline width={second_w} height={second_h} src={ds_src} title="DS dean Congrats"></video> 
         </div>
       </div>
     </div>
