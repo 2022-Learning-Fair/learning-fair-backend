@@ -126,9 +126,9 @@ def session_check():
 def congrats_vidoes():
     #영상 업데이트 되면 url 바꿔야 함
     congrats_vidoes_json = {
-        "president":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video1.mp4",
-        "sw_dean":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video2.mp4",
-        "ds_dean":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/video3.mp4"
+        "president":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/president_congrats.mp4",
+        "sw_dean":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/sw_dean_congrats.mp4",
+        "ds_dean":"https://2022-skku-learning-fair-bucket.s3.ap-northeast-2.amazonaws.com/congrats/ds_dean_congrats.mp4"
     }
 
     return jsonify(congrats_vidoes_json)
