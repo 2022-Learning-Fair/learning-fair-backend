@@ -76,13 +76,13 @@ function Project() {
         hashtag_custom_c: data.hashtag_custom_c,
 
         like_cnt: data.like_cnt
-      };
+      };   
       setLike(project.current.like_cnt);
     } catch (e) {
       console.log(e);
     }
   }
-
+  
   async function handleOnclick(loginCheckreqJson) {
     try {
       const response = await axios.post(
@@ -119,7 +119,6 @@ function Project() {
     youtube_w = window.innerWidth * 0.8;
     youtube_h = youtube_w * 0.7;
   }
-
   return (
     <div className="Project">
       <div className="ProjectInfo">
@@ -167,12 +166,13 @@ function Project() {
             opts={{
               width: youtube_w,
               height: youtube_h,
-              playerVars: { autoplay: 1, rel: 0, modestbranding: 1 }
+              playerVars: { autoplay: 1, rel: 0, modestbranding: 1 , start:1}              
             }}
             onEnd={(e) => {
               e.target.stopVideo(0);
             }}
           />
+          
         </div>
         <div className="ProjectContent" id="ProjectPDF">
           <p>PDF</p>
