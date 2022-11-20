@@ -21,8 +21,8 @@ const Header = () => {
     setActive(!isActive);
   };
   useEffect(() => {
-    if (localStorage.getItem("login-name")) {
-      setUserName(localStorage.getItem("login-name"));
+    if (sessionStorage.getItem("login-name")) {
+      setUserName(sessionStorage.getItem("login-name"));
     }
   }, []);
 
