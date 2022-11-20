@@ -3,7 +3,6 @@ import Header from "./header";
 import "../../css/layouts/layout.scss";
 import { Route, Routes, useLocation } from "react-router";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Main from "../Main";
 import Awards from "../Awards";
@@ -13,42 +12,6 @@ import Class from "../Class";
 import Project from "../Project";
 
 const Layout = () => {
-  const sessionCheckJson = {
-    token: localStorage.getItem("login-token"),
-    name: localStorage.getItem("login-name")
-  };
-  const navigate = useNavigate();
-
-  async function session_check_api(sessionChkJson) {
-    try {
-      const response = await axios.post(
-        "/api/session-check",
-        JSON.stringify(sessionChkJson),
-        {
-          headers: {
-            "Content-Type": `application/json`
-          }
-        }
-      );
-
-      if (response["data"]["session"] === "deactive") {
-        console.log("You need to login in!");
-        navigate("/");
-      }
-
-      
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  console.log(localStorage.getItem("login-token"));
-  useEffect(() => {
-    session_check_api(sessionCheckJson);
-  }, []);
-
-  //-----------세션 체크 완료------------------
-
   async function project_layout_info_api(projectLayoutInfoReqJson) {
     try {
       const response = await axios.post(
@@ -103,6 +66,7 @@ const Layout = () => {
             <Route path="/awards" element={<Awards />} />
             <Route path="/congrats" element={<Congrats />} />
             <Route path="/tag" element={<Tag />} />
+            <Route path="/tag/:tagId" element={<Tag />} />
             <Route path="/class/:classId" element={<Class />} />
             <Route path="/project/:projectId" element={<Project />} />
             <Route path="*" element={<Main />} />

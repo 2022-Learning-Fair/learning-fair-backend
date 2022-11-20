@@ -56,3 +56,32 @@
   border-bottom: solid 1px #8aa1a1;
   outline: none;
 }
+@media(max-width:768px){
+  .inputText{
+      width:auto;
+      height:auto;
+  }
+  .inputTextShow{
+      width:auto;
+      height:auto;
+      margin-left: 0;
+      align-items:center;
+  }
+  .input-box{
+      width:auto;
+      height:auto;
+      margin: 5px 0;
+  }
+  .input-box > .textInput{
+      width:auto;
+      font-size:11pt;
+  }
+  .textInput:placeholder-shown + label{
+      font-size:12pt; 
+      overflow-y:hidden;
+  }
+  .textInput:focus + label, .textLabel{
+      font-size:11pt;
+      overflow-y:hidden;
+  }
+}

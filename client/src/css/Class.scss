@@ -5,5 +5,13 @@
   height: auto;
 }
 
+@media(max-width:768px){
+  .Class{
+    width:auto;
+    margin-left:5%;
+    margin-right:5%;
+  }
+}
+
 @import url("class/SwitchBtn.scss");
 @import url("class/Grid.scss");

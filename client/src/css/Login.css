@@ -7,6 +7,17 @@
   margin: 100px 0;
 }
 
+@media (max-width: 768px){
+  .Login{
+    width: auto;
+    height: auto;
+  }
+  body{
+    width: auto;
+    height: auto;
+  }
+}
+
 /* loginHeader */
 @import url("login/header.css");
 

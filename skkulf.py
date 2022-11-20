@@ -17,7 +17,10 @@ app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 
 #테스트를 위한 값임.. 배포 시에는 minutes=20이 적당해보임
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=1)
+#app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=20)
+
+#이 값을 조정해서 세션 지속 시간 결정
+session_duration_seconds = 60
 
 
 @app.route('/')
@@ -67,9 +70,9 @@ def login():
             cur.execute(sql2)
         user_id_db_result = cur.fetchall()
         
-        session[User_token] = user_id_db_result[0][0]
-        session[str(user_id_db_result[0][0])] = User_name
-        session['User_id'] = user_id_db_result[0][0]
+        #session[User_token] = user_id_db_result[0][0]
+        #session[str(user_id_db_result[0][0])] = User_name
+        #session['User_id'] = user_id_db_result[0][0]
 
         if User_name in session:
             print("why!!")
@@ -81,17 +84,45 @@ def login():
 
 @app.route('/api/session-check', methods=['POST'])
 def session_check():
+    conn = pymysql.connect(host=os.environ.get('DB_URL'),
+                       user=os.environ.get('DB_USER'),
+                       password=os.environ.get('DB_PASSWORD'),
+                       db=os.environ.get('DB_NAME'),
+                       charset='utf8')
 
     session_check_json = request.get_json()
 
-    print(session_check_json)
-    print(session)
-    print(session_check_json['name'])
+    #print(session_check_json)
+    #print(session)
+    #print(session_check_json['name'])
 
+    sql = f"""SELECT user_login_time FROM user WHERE user_token = '{session_check_json['token']}'"""
+
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    session_check_db_result = cur.fetchall()
+
+    if len(session_check_db_result) > 0:
+        cal_time_delta = datetime.datetime.now() - session_check_db_result[0][0]
+        #print(datetime.datetime.now())
+        #print(session_check_db_result[0][0])
+        #print(cal_time_delta.seconds)
+
+    global session_duration_seconds
+    if len(session_check_db_result) > 0:
+        if cal_time_delta.seconds <= session_duration_seconds:
+            return jsonify({"session":"active", "user_name":session_check_json['name']})
+        else:
+            return jsonify({"session":"deactive"})
+    else:
+        return jsonify({"session":"deactive"})
+
+    '''
     if session_check_json['token'] in session:
         return jsonify({"session":"active", "user_name":session_check_json['name']})
     else:
         return jsonify({"session":"deactive"})
+    '''
 
 
 
@@ -188,7 +219,7 @@ def class_list():
         class_project_list_db_result_rand = cur.fetchall()
         
     class_project_list_json = {"projects":[],"projectsRand":[]}
-    
+
     for class_project in class_project_list_db_result:
         project_container = {
             "team_name":class_project[0], 
@@ -221,7 +252,6 @@ def class_list():
         }
         
         class_project_list_json["projectsRand"].append(project_container_rand)
-
     return jsonify(class_project_list_json)
 
 @app.route('/api/tag')
@@ -232,17 +262,23 @@ def tag_list():
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
 
-    tag_code = request.args.get('tag')
+    tag_name = request.args.get('tag')
 
-    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c FROM project WHERE hashtag_main = '{tag_code}' ORDER BY RAND()"""
+    sql = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c, project_name,like_cnt,project_thumbnail_url,project_id FROM project WHERE hashtag_main = '{tag_name}'"""
+    sql_ = f"""SELECT team_name, team_member, team_number, hashtag_main, hashtag_custom_a, hashtag_custom_b, hashtag_custom_c, project_name,like_cnt,project_thumbnail_url,project_id FROM project WHERE hashtag_main = '{tag_name}' ORDER BY RAND()"""
 
     with conn.cursor() as cur:
         cur.execute(sql)
-    tag_project_list_db_result = cur.fetchall()
+        tag_project_list_db_result = cur.fetchall()
+    
+    with conn.cursor() as cur:
+        cur.execute(sql_)
+        tag_project_list_db_result_rand = cur.fetchall()
+    
 
-    tag_project_list_json = {"projects":[]}
+    tag_project_list_json = {"projects":[], "projectsRand":[]}
     for tag_project in tag_project_list_db_result:
-        project_container = {
+        tagproject_container = {
             "team_name":tag_project[0], 
             "team_member":tag_project[1], 
             "team_number":tag_project[2], 
@@ -250,10 +286,30 @@ def tag_list():
             "hashtag_custom_a":tag_project[4], 
             "hashtag_custom_b":tag_project[5], 
             "hashtag_custom_c":tag_project[6],
+            "project_name":tag_project[7],
+            "like_cnt":tag_project[8],
+            "project_thumbnail_url":tag_project[9],
+            "project_id":tag_project[10]
         }
 
-        tag_project_list_json["projects"].append(project_container)
+        tag_project_list_json["projects"].append(tagproject_container)
+    
+    for tag_project in tag_project_list_db_result_rand:
+        tagproject_container_rand = {
+            "team_name":tag_project[0], 
+            "team_member":tag_project[1], 
+            "team_number":tag_project[2], 
+            "hashtag_main":tag_project[3], 
+            "hashtag_custom_a":tag_project[4], 
+            "hashtag_custom_b":tag_project[5], 
+            "hashtag_custom_c":tag_project[6],
+            "project_name":tag_project[7],
+            "like_cnt":tag_project[8],
+            "project_thumbnail_url":tag_project[9],
+            "project_id":tag_project[10]
+        }
 
+        tag_project_list_json["projectsRand"].append(tagproject_container_rand)
     return jsonify(tag_project_list_json)
 
 @app.route('/api/project/<int:id>')
@@ -272,15 +328,29 @@ def like_project(pj_id):
                        password=os.environ.get('DB_PASSWORD'),
                        db=os.environ.get('DB_NAME'),
                        charset='utf8')
-    
-    #us_id = session['User_id']
 
-    if like_request_json['token'] in session:
-        us_id = session[like_request_json['token']]
+    #if like_request_json['token'] in session:
+    #    us_id = session[like_request_json['token']]
+
+    sessionsql = f"""SELECT user_id, user_login_time FROM user WHERE user_token = '{like_request_json['token']}'"""
+
+    with conn.cursor() as cur:
+        cur.execute(sessionsql)
+    session_check_db_result = cur.fetchall()
+
+    print(session_check_db_result[0][0])
+    print(session_check_db_result[0][1])
+
+    if len(session_check_db_result) > 0:
+        cal_time_delta = datetime.datetime.now() - session_check_db_result[0][1]
+    
+    global session_duration_seconds
+    if len(session_check_db_result) > 0 and cal_time_delta.seconds <= session_duration_seconds:
+        us_id = session_check_db_result[0][1]
 
         likesql = f"""SELECT EXISTS(SELECT * FROM like_table
-                    WHERE project_id = {pj_id} AND
-                    user_id = {us_id}) AS t"""
+                    WHERE project_id = '{pj_id}' AND
+                    user_id = '{us_id}') AS t"""
                     
         with conn.cursor() as cur:
             cur.execute(likesql)
@@ -292,17 +362,17 @@ def like_project(pj_id):
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt + 1
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
             liketable= f"""
                     INSERT into like_table
                     (user_id, project_id) VALUES
-                    ({us_id}, {pj_id})
+                    ('{us_id}', '{pj_id}')
                     """
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
                     
             with conn.cursor() as cur:
@@ -318,25 +388,24 @@ def like_project(pj_id):
 
             like_button = True
             like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
-            
-            #return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
+
             return jsonify(like_info_json)
         
         else :
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt - 1
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
             liketable= f"""
                     DELETE from like_table
-                    WHERE user_id = {us_id}
-                    AND project_id = {pj_id}
+                    WHERE user_id = '{us_id}'
+                    AND project_id = '{pj_id}'
                     """
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
-                    WHERE project_id = {pj_id}
+                    WHERE project_id = '{pj_id}'
                     """
             with conn.cursor() as cur:
                 cur.execute(likeup)
@@ -351,7 +420,6 @@ def like_project(pj_id):
             like_button = False
             like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
             
-            #return lfmodules.template(lfmodules.getContents(), f'<h2>쪼아용</h2>{like_info_json}')
     else:
         like_info_json = {"likeinfo":"session-out"}
 

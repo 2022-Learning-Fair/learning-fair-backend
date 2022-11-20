@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "../css/Project.scss";
 import axios from "axios";
 import YouTube from "react-youtube";
@@ -7,16 +7,47 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Project() {
-    const sessionCheckJson = {
-        token: localStorage.getItem("login-token"),
-        name: localStorage.getItem("login-name")
-    };
+  const sessionCheckJson = {
+    token: localStorage.getItem("login-token"),
+    name: localStorage.getItem("login-name")
+  };
+  const navigate = useNavigate();
+
+  async function session_check_api(sessionChkreqJson) {
+    try {
+      const response = await axios.post(
+        "/api/session-check",
+        JSON.stringify(sessionChkreqJson),
+        {
+          headers: {
+            "Content-Type": `application/json`
+          }
+        }
+      );
+
+      if (response["data"]["session"] === "deactive") {
+        console.log("You need to login in!");
+        navigate("/");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    session_check_api(sessionCheckJson);
+  }, []);
+
+  //-----------세션 체크 완료------------------
+
+  const loginCheckJson = {
+    token: localStorage.getItem("login-token"),
+    name: localStorage.getItem("login-name")
+  };
 
   const project = useRef("");
   const [like_show, setLike] = useState(0);
   const click = useRef(false);
-
-  const navigate = useNavigate();
 
   async function project_info_api(projectInfoReqJson) {
     try {
@@ -56,11 +87,11 @@ function Project() {
     }
   }
 
-  async function handleOnclick(sessionCheckreqJson) {
+  async function handleOnclick(loginCheckreqJson) {
     try {
       const response = await axios.post(
         `/api/project/${project_id}/like`,
-        JSON.stringify(sessionCheckreqJson),
+        JSON.stringify(loginCheckreqJson),
         {
           headers: {
             "Content-Type": `application/json`
@@ -71,12 +102,14 @@ function Project() {
       if (response["data"]["likeinfo"] === "session-out") {
         console.log("You need to login in!");
         navigate("/");
-      }
-      else{
+      } else {
         const likeInfo = response.data.likeinfo;
         click.current = likeInfo.isClicked;
         setLike(likeInfo.like_cnt);
-        console.log(likeInfo, like_show, click.current);
+        project.current.like_cnt = likeInfo.like_cnt;
+        console.log(likeInfo);
+        console.log(like_show, project.current.like_cnt);
+        console.log(likeInfo.isClicked, click.current);
       }
     } catch (e) {
       console.log(e);
@@ -88,6 +121,13 @@ function Project() {
     project_info_api({ project_id });
   }, [project_id]);
 
+  var youtube_w = 700;
+  var youtube_h = 350;
+  if (window.matchMedia("(max-width:768px)").matches) {
+    youtube_w = window.innerWidth * 0.8;
+    youtube_h = youtube_w * 0.7;
+  }
+
   return (
     <div className="Project">
       <div className="ProjectInfo">
@@ -96,19 +136,33 @@ function Project() {
         <div className="ProjectInfoWrapper">
           <button
             id="ProjectLike"
-            onClick={()=>{handleOnclick(sessionCheckJson)}}
+            onClick={() => {
+              handleOnclick(loginCheckJson);
+            }}
             className={`${click.current ? "" : "NoneClick"}`}
           >
             <div>
               <span className="material-symbols-outlined">favorite</span>
-              {like_show}
+              {project.current.like_cnt}
             </div>
           </button>
           <p id="ProjectHashtag">
             <span>#{project.current.hashtag_main}</span>
-            <span>#{project.current.hashtag_custom_a}</span>
-            <span>#{project.current.hashtag_custom_b}</span>
-            <span>#{project.current.hashtag_custom_c}</span>
+            {project.current.hashtag_custom_a ? (
+              <span>#{project.current.hashtag_custom_a}</span>
+            ) : (
+              ""
+            )}
+            {project.current.hashtag_custom_b ? (
+              <span>#{project.current.hashtag_custom_b}</span>
+            ) : (
+              ""
+            )}
+            {project.current.hashtag_custom_c ? (
+              <span>#{project.current.hashtag_custom_c}</span>
+            ) : (
+              ""
+            )}
           </p>
         </div>
       </div>
@@ -119,6 +173,8 @@ function Project() {
             className="ProjectYoutube"
             videoId={project.current.project_youtube_url}
             opts={{
+              width: youtube_w,
+              height: youtube_h,
               playerVars: { autoplay: 1, rel: 0, modestbranding: 1 }
             }}
             onEnd={(e) => {
@@ -128,6 +184,7 @@ function Project() {
         </div>
         <div className="ProjectContent" id="ProjectPDF">
           <p>PDF</p>
+          <span>* 이 PDF는 데스크탑에서 보기를 권장합니다.</span>
           <embed
             className="ProjectPDF"
             src={project.current.project_pdf_url}
