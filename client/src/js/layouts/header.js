@@ -13,6 +13,9 @@ const Header = () => {
     navigate(classURL);
   }
   var jbRandom = Math.random();
+  var random_id=Math.floor(jbRandom*100);
+  if (random_id===0) random_id=1;
+  var project_src='/project/'+random_id;
   const [isActive, setActive] = useState(false);
   const handleToggle = () => {
     setActive(!isActive);
@@ -22,6 +25,7 @@ const Header = () => {
       setUserName(localStorage.getItem("login-name"));
     }
   }, []);
+
   return (
     <header className="header">
       <img
@@ -69,6 +73,7 @@ const Header = () => {
           onClick={() => handleOnClick("/awards")}
           value="시상식"
         />
+        <a href={project_src}>
         <Button
           id="Explore"
           onClick={() =>
@@ -76,6 +81,7 @@ const Header = () => {
           }
           value="탐험하기"
         />
+        </a>
       </div>
       <nav id="main-menu">
         <ul>
@@ -186,13 +192,15 @@ const Header = () => {
                 value="시상식"
               />
             </a>
-            <Button
-              id="Explore2"
-              onClick={() =>
-                handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
-              }
-              value="탐험하기"
-            />
+            <a href={project_src} >
+              <Button
+                id="Explore2"
+                onClick={() =>
+                  handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
+                }
+                value="탐험하기"
+              />
+            </a>
           </ul>
         </nav>
       </label>

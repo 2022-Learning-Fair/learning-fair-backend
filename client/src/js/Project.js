@@ -177,6 +177,7 @@ function Project() {
         <div className="ProjectContent" id="ProjectPDF">
           <p>PDF</p>
           <span>* 이 PDF는 데스크탑에서 보기를 권장합니다.</span>
+          <br></br>
           <embed
             className="ProjectPDF"
             src={project.current.project_pdf_url}
