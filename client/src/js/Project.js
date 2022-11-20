@@ -135,7 +135,7 @@ function Project() {
           >
             <div>
               <span className="material-symbols-outlined">favorite</span>
-              {like}
+              <p>{like}</p>
             </div>
           </button>
           <p id="ProjectHashtag">

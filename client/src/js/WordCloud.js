@@ -7,14 +7,13 @@ function WordCloud() {
   const navigate = useNavigate();
   const callbacks = useMemo(() => {
     return {
-      onWordClick: () => navigate(`/tag`),
-      onWordHover: () => console.log("hi")
+      onWordClick: () => navigate(`/tag`)
     };
-  }, []);
+  }, [navigate]);
   const options = useMemo(() => {
     if (window.matchMedia("(max-width:768px)").matches)
       return {
-        enableTooltip: true,
+        enableTooltip: false,
         deterministic: false,
         fontFamily: "헤드라인",
         fontSizes: [20, 80],
@@ -27,7 +26,7 @@ function WordCloud() {
         spiral: "rectangular"
       };
     return {
-      enableTooltip: true,
+      enableTooltip: false,
       deterministic: false,
       fontFamily: "헤드라인",
       fontSizes: [50, 150],

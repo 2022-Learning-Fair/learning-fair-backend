@@ -71,7 +71,8 @@ $target: #edfeedd3;
 @media (max-width: 500px) {
   .MainTitle {
     margin-left: 5%;
-    margin-bottom: 5%;
+    padding: 0;
+    margin-bottom: -5%;
   }
   .focus {
     width: 100%;
@@ -79,14 +80,10 @@ $target: #edfeedd3;
     font-size: 20pt;
     font-weight: 600;
     opacity: 1;
-    overflow: hidden;
     filter: none;
     //word-break:break-all;
   }
   .mask {
-    font-size: 30px;
-    padding: 5px;
-    overflow: hidden;
     display: none;
   }
   .titleText {

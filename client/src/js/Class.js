@@ -25,7 +25,6 @@ function Class() {
       );
 
       if (response["data"]["session"] === "deactive") {
-        console.log("You need to login in!");
         navigate("/");
       }
     } catch (e) {

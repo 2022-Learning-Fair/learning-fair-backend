@@ -10,6 +10,10 @@ $pink-shadow: #ffe3e2;
   div {
     display: flex;
     padding-right: 10px;
+    overflow: visible;
+    p {
+      margin-top: 2px;
+    }
   }
   width: 80px;
   height: 40px;
@@ -22,6 +26,7 @@ $pink-shadow: #ffe3e2;
   font-size: inherit;
   font-family: inherit;
   font-weight: 700;
+
   color: $text;
   background: $light-pink;
   border: 2px solid $pink-border;
@@ -45,6 +50,9 @@ $pink-shadow: #ffe3e2;
     transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
       box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
   }
+  p {
+    overflow: visible;
+  }
   &:hover {
     background: $pink;
     transform: translate(0, 0.25em);
@@ -64,7 +72,7 @@ $pink-shadow: #ffe3e2;
 }
 
 .material-symbols-outlined {
-  padding-right: 5px;
+  padding-right: 3px;
   // margin:0;
   color: rgb(255, 84, 84);
   font-variation-settings: "FILL" 1, "wght" 100, "GRAD" 0, "opsz" 40;
@@ -82,16 +90,16 @@ $pink-shadow: #ffe3e2;
     width: 70px;
     height: 35px;
     font-size: 11pt;
-    padding-right: 0;
+    margin: 10px;
     padding-top: 3px;
+    display: flex;
+    justify-content: center;
     &::before {
       display: none;
     }
   }
-  #ProjectLike * {
-    overflow-y: hidden;
-  }
   .material-symbols-outlined {
-    padding-right: 0;
+    overflow: visible;
+    padding-left: 5px;
   }
 }
