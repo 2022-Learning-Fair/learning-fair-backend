@@ -20,7 +20,7 @@ app.secret_key = os.environ.get('FLASK_SESSION_SECRETKEY')
 #app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=20)
 
 #이 값을 조정해서 세션 지속 시간 결정
-session_duration_seconds = 60
+session_duration_seconds = 86400
 
 
 @app.route('/')
