@@ -52,8 +52,7 @@ const Header = () => {
             <MenuGroup className="rightMenu">
               <Menu value="DASF002I6" />
               <Menu value="DASF002I7" />
-              <Menu value="DASF002I8" />
-              <Menu value="DASF002I9" />
+              <Menu value="DASF002IF" />
               <Menu value="GEDT015I1" />
             </MenuGroup>
           </div>
@@ -160,10 +159,7 @@ const Header = () => {
                   <a href="/class/DASF002I7">DASF002I7</a>
                 </li>
                 <li>
-                  <a href="/class/DASF002I8">DASF002I8</a>
-                </li>
-                <li>
-                  <a href="/class/DASF002I9">DASF002I9</a>
+                  <a href="/class/DASF002IF">DASF002IF</a>
                 </li>
                 <li>
                   <a href="/class/GEDT015I1">GEDT015I1</a>
