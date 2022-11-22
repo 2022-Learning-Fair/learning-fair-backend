@@ -13,7 +13,7 @@ const Header = () => {
     navigate(classURL);
   }
   var jbRandom = Math.random();
-  var random_id=((Math.floor(jbRandom*1000))%667)+7346;
+  var random_id=((Math.floor(jbRandom*1000))%667)+8388;
   if (random_id===0) random_id=1;
   var project_src='/project/'+random_id;
   const [isActive, setActive] = useState(false);
@@ -80,15 +80,16 @@ const Header = () => {
           onClick={() => handleOnClick("/awards")}
           value="시상식"
         />
-        <a href={project_src}>
+        {/*<a href={project_src}>*/}
         <Button
           id="Explore"
           onClick={() =>
-            handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
+            //handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
+            handleOnClick(project_src)
           }
           value="탐험하기"
         />
-        </a>
+        {/*</a>*/}
       </div>
       <nav id="main-menu">
         <ul>
@@ -124,7 +125,8 @@ const Header = () => {
             <Button
               id="Explore2"
               onClick={() =>
-                handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
+                //handleOnClick(`/project/${Math.floor(jbRandom * 100)}`)
+                handleOnClick(project_src)
               }
               value="탐험하기"
             />
