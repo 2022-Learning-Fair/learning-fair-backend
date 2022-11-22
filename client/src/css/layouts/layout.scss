@@ -6,8 +6,9 @@ $target: #edfeedd3;
 .MainTitle {
   position: sticky;
   height: 70px;
-  white-space: nowrap;
   margin: 30px 0px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .focus {
@@ -18,7 +19,7 @@ $target: #edfeedd3;
   text-transform: uppercase;
   letter-spacing: 2px;
   filter: blur(3px);
-  font-size: 50px;
+  font-size: 40px;
   opacity: 0.6;
   color: #fff;
 }
@@ -26,13 +27,13 @@ $target: #edfeedd3;
 .mask {
   position: absolute;
   left: -11px;
-  top: 6px;
+  top: 10px;
   width: 70px;
   font-family: Arial;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 50px;
+  font-size: 40px;
   clip: rect(0px, 70px, 75px, 0px);
   background: linear-gradient($target, $target 0) no-repeat,
     linear-gradient(to right, $target, $target 0) no-repeat,
@@ -70,23 +71,26 @@ $target: #edfeedd3;
 
 @media (max-width: 500px) {
   .MainTitle {
-    margin-left: 5%;
-    padding: 0;
-    margin-bottom: -5%;
+    margin: 0;
+    position: relative;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal;
   }
   .focus {
-    width: 100%;
-    height: 100%;
-    font-size: 20pt;
+    position: relative;
+    padding: 25px 20px;
+    font-size: 15pt;
     font-weight: 600;
     opacity: 1;
     filter: none;
-    //word-break:break-all;
+    font-family: Arial;
+    letter-spacing: 2px;
+    color: #fff;
   }
   .mask {
     display: none;
-  }
-  .titleText {
-    overflow: hidden;
   }
 }

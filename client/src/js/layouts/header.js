@@ -33,6 +33,14 @@ const Header = () => {
         onClick={() => handleOnClick("/main")}
         alt=""
         className="headerLogo"
+        id="DesktopLogo"
+      />
+      <img
+        src={`${process.env.PUBLIC_URL}/LFlogo.png`}
+        onClick={() => handleOnClick("/main")}
+        alt=""
+        className="headerLogo"
+        id="MobileLogo"
       />
       <div className="headerMenu">
         <Button

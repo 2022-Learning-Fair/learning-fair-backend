@@ -160,7 +160,8 @@ function Project() {
       <div className="ProjectContentWrapper">
         <div className="ProjectContent" id="ProjectYoutube">
           <p>YouTube</p>
-          <YouTube
+          {project.current.project_youtube_url ? (
+            <YouTube
             className="ProjectYoutube"
             videoId={project.current.project_youtube_url}
             opts={{
@@ -172,6 +173,7 @@ function Project() {
               e.target.stopVideo(0);
             }}
           />
+          ) : (<span>유튜브 영상이 존재하지 않습니다.</span>)}
           
         </div>
         <div className="ProjectContent" id="ProjectPDF">

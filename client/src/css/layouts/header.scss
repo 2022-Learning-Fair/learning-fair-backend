@@ -5,8 +5,25 @@
   flex-flow: row wrap;
   flex: auto;
   justify-content: center;
-  margin: 10px 5px;
+  margin: 10px 10px;
   letter-spacing: 0.1em;
+}
+
+#MobileLogo{
+  display:none;
+}
+
+@media (max-width: 500px) {
+  .header {
+    justify-content: center;
+    margin: 10px 20px;
+  }
+  #DesktopLogo{
+    display:none;
+  }
+  #MobileLogo{
+    display:block;
+  }
 }
 
 @import url("header/headerMenu.scss");
