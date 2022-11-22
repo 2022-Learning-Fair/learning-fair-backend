@@ -160,7 +160,7 @@ function Project() {
       <div className="ProjectContentWrapper">
         <div className="ProjectContent" id="ProjectYoutube">
           <p>YouTube</p>
-          {project.current.project_youtube_url ? (
+          {project.current.project_youtube_url !== '-' ? (
             <YouTube
             className="ProjectYoutube"
             videoId={project.current.project_youtube_url}
