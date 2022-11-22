@@ -13,7 +13,7 @@ const Header = () => {
     navigate(classURL);
   }
   var jbRandom = Math.random();
-  var random_id=Math.floor(jbRandom*100);
+  var random_id=((Math.floor(jbRandom*1000))%667)+7346;
   if (random_id===0) random_id=1;
   var project_src='/project/'+random_id;
   const [isActive, setActive] = useState(false);
