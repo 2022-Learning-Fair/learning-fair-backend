@@ -132,10 +132,6 @@ function WordCloud() {
         value: 2
       },
       {
-        text: "예술&디자인",
-        value: 3
-      },
-      {
         text: "컴퓨팅",
         value: 3
       },
