@@ -352,7 +352,7 @@ def like_project(pj_id):
             like_button = cur.fetchall()
             like_button = like_button[0][0]
             conn.commit()
-        like_button = 1
+        like_button = 0
             
         if like_button == 0:
             likeup= f"""
