@@ -80,7 +80,7 @@ function WordCloud() {
         value: 6
       },
       {
-        text: "운동/스포츠",
+        text: "운동&스포츠",
         value: 19
       },
       {
