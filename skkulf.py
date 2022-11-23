@@ -336,7 +336,7 @@ def like_project(pj_id):
     projectsql = f"""SELECT project_name, team_name FROM project WHERE project_id = '{pj_id}'"""
 
     with conn.cursor() as cur:
-        cur.execute(sessionsql)
+        cur.execute(projectsql)
         project_info = cur.fetchall()
 
     print(session_check_db_result[0][0])
@@ -359,8 +359,6 @@ def like_project(pj_id):
             like_button = cur.fetchall()
             locals()['like_{}'.format(us_id)] = like_button[0][0]
             conn.commit()
-
-        #like_button = 0
             
         if 'like_{}'.format(us_id) == 0:
             likeup= f"""
