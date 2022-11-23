@@ -166,7 +166,7 @@ function Project() {
               opts={{
                 width: youtube_w,
                 height: youtube_h,
-                playerVars: { autoplay: 1, rel: 0, modestbranding: 1, start: 1 }
+                playerVars: { autoPlay: 1, rel: 0, modestbranding: 1, start: 1 }
               }}
               onEnd={(e) => {
                 e.target.stopVideo(0);
