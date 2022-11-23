@@ -339,9 +339,6 @@ def like_project(pj_id):
         cur.execute(projectsql)
         project_info = cur.fetchall()
 
-    print(session_check_db_result[0][0])
-    print(session_check_db_result[0][1])
-
     cal_time_delta = datetime.datetime.now() - session_check_db_result[0][1]
     
     global session_duration_seconds
@@ -389,8 +386,8 @@ def like_project(pj_id):
                 like_data = like_data[0][0]
                 conn.commit()
 
-            like_button = True
-            like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+            like_button_message = True
+            like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button_message}]}
 
             return jsonify(like_info_json)
         
@@ -422,8 +419,8 @@ def like_project(pj_id):
                 like_data = cur.fetchall()
                 like_data = like_data[0][0]
                 conn.commit()
-            like_button = False
-            like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button}]}
+            like_button_message = False
+            like_info_json = {"likeinfo":[{"like_cnt":like_data, "like_button":like_button_message}]}
             
     else:
         like_info_json = {"likeinfo":"session-out"}
