@@ -331,7 +331,7 @@ def like_project(pj_id):
 
     with conn.cursor() as cur:
         cur.execute(sessionsql)
-    session_check_db_result = cur.fetchall()
+        session_check_db_result = cur.fetchall()
 
     projectsql = f"""SELECT project_name, team_name FROM project WHERE project_id = '{pj_id}'"""
 
