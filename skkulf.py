@@ -333,6 +333,12 @@ def like_project(pj_id):
         cur.execute(sessionsql)
     session_check_db_result = cur.fetchall()
 
+    projectsql = f"""SELECT project_name, team_name FROM project WHERE project_id = '{pj_id}'"""
+
+    with conn.cursor() as cur:
+        cur.execute(sessionsql)
+        project_info = cur.fetchall()
+
     print(session_check_db_result[0][0])
     print(session_check_db_result[0][1])
 
@@ -352,13 +358,13 @@ def like_project(pj_id):
             like_button = cur.fetchall()
             like_button = like_button[0][0]
             conn.commit()
-        like_button = 0
             
         if like_button == 0:
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt + 1
-                    WHERE project_id = '{pj_id}'
+                    WHERE project_name = '{project_info[0][0]}' and
+                    team_name = '{project_info[0][1]}'
                     """
             liketable= f"""
                     INSERT into like_table
@@ -368,7 +374,8 @@ def like_project(pj_id):
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
-                    WHERE project_id = '{pj_id}'
+                    WHERE project_name = '{project_info[0][0]}' and
+                    team_name = '{project_info[0][1]}'
                     """
                     
             with conn.cursor() as cur:
@@ -391,7 +398,8 @@ def like_project(pj_id):
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt - 1
-                    WHERE project_id = '{pj_id}'
+                    WHERE project_name = '{project_info[0][0]}' and
+                    team_name = '{project_info[0][1]}'
                     """
             liketable= f"""
                     DELETE from like_table
@@ -401,7 +409,8 @@ def like_project(pj_id):
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
-                    WHERE project_id = '{pj_id}'
+                    WHERE project_name = '{project_info[0][0]}' and
+                    team_name = '{project_info[0][1]}'
                     """
             with conn.cursor() as cur:
                 cur.execute(likeup)
