@@ -340,7 +340,7 @@ def like_project(pj_id):
         cal_time_delta = datetime.datetime.now() - session_check_db_result[0][1]
     
     global session_duration_seconds
-    if len(session_check_db_result) > 0 and cal_time_delta.seconds <= session_duration_seconds:
+    if len(session_check_db_result) > 0 & cal_time_delta.seconds <= session_duration_seconds:
         us_id = session_check_db_result[0][1]
 
         likesql = f"""SELECT EXISTS(SELECT * FROM like_table
@@ -352,6 +352,7 @@ def like_project(pj_id):
             like_button = cur.fetchall()
             like_button = like_button[0][0]
             conn.commit()
+        like_button = 1
             
         if like_button == 0:
             likeup= f"""
