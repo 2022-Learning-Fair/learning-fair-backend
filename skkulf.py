@@ -353,7 +353,6 @@ def like_project(pj_id):
                     WHERE project_id = '{pj_id}' AND
                     user_id = '{us_id}') AS t"""
                     
-
         with conn.cursor() as cur:
             cur.execute(likesql)
             like_button = cur.fetchall()
@@ -379,6 +378,7 @@ def like_project(pj_id):
                     team_name = '{project_info[0][1]}'
                     """
                     
+
             with conn.cursor() as cur:
                 cur.execute(likeup)
                 cur.execute(liketable)
