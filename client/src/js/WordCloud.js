@@ -48,16 +48,16 @@ function WordCloud() {
   const words = useMemo(() => {
     return [
       {
-        text: "편의/도구",
-        value: 178
+        text: "편의&도구",
+        value: 165
       },
       {
         text: "취업",
-        value: 4
+        value: 5
       },
       {
         text: "기타",
-        value: 10
+        value: 9
       },
       {
         text: "게임",
@@ -65,55 +65,55 @@ function WordCloud() {
       },
       {
         text: "패션",
-        value: 25
+        value: 24
       },
       {
         text: "환경",
-        value: 38
+        value: 36
       },
       {
         text: "의료",
-        value: 11
+        value: 10
       },
       {
         text: "음악",
-        value: 3
+        value: 6
       },
       {
         text: "운동/스포츠",
-        value: 22
+        value: 19
       },
       {
         text: "요리",
-        value: 37
+        value: 33
       },
       {
         text: "교육",
-        value: 37
+        value: 40
       },
       {
-        text: "영화/도서",
+        text: "영화&도서",
         value: 15
       },
       {
         text: "생활",
-        value: 121
+        value: 117
       },
       {
         text: "AI",
-        value: 14
+        value: 9
       },
       {
         text: "여행",
-        value: 16
+        value: 19
       },
       {
         text: "힐링",
-        value: 7
+        value: 8
       },
       {
         text: "비즈니스",
-        value: 5
+        value: 4
       },
       {
         text: "커뮤니케이션",
@@ -125,23 +125,23 @@ function WordCloud() {
       },
       {
         text: "지도",
-        value: 30
+        value: 24
       },
       {
         text: "창작",
+        value: 2
+      },
+      {
+        text: "예술&디자인",
         value: 3
       },
       {
-        text: "예술/디자인",
-        value: 7
-      },
-      {
         text: "컴퓨팅",
-        value: 4
+        value: 3
       },
       {
         text: "보안",
-        value: 7
+        value: 6
       },
       {
         text: "러닝페어",
