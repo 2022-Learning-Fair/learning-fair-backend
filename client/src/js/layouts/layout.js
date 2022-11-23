@@ -31,13 +31,12 @@ const Layout = () => {
       console.log(e);
     }
   }
-
   const [title, setTitle] = useState(false);
   const loc = useLocation().pathname;
   useEffect(() => {
     if (loc === "/main") {
       setTitle("");
-    } else if (loc === "/tag") {
+    } else if (loc.slice(0, 4) === "/tag") {
       setTitle("해시태그");
     } else if (loc === "/awards") {
       setTitle("Awards");
