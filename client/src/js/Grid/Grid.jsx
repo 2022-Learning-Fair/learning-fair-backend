@@ -27,17 +27,17 @@ function Grid({ project }) {
       <p className="GridTeamMember">{project.team_member}</p>
       <p className="GridHashtag">
         <span>#{project.hashtag_main}</span>
-        {project.hashtag_custom_a ? (
+        {project.hashtag_custom_a !== "-" ? (
           <span>#{project.hashtag_custom_a}</span>
         ) : (
           ""
         )}
-        {project.hashtag_custom_b ? (
+        {project.hashtag_custom_b !== "-" ? (
           <span>#{project.hashtag_custom_b}</span>
         ) : (
           ""
         )}
-        {project.hashtag_custom_c ? (
+        {project.hashtag_custom_c !== "-" ? (
           <span>#{project.hashtag_custom_c}</span>
         ) : (
           ""

@@ -7,7 +7,12 @@ function WordCloud() {
   const navigate = useNavigate();
   const callbacks = useMemo(() => {
     return {
-      onWordClick: () => navigate(`/tag`)
+      onWordClick: (key) => {
+        if(key.text === '성균관대' || key.text === '러닝페어' || key.text === '2022' || key.text === '문제해결' || key.text === '알고리즘'){
+          return navigate(`/tag`)
+        }
+        else navigate(`/tag/${key.text}`)
+      }
     };
   }, [navigate]);
   const options = useMemo(() => {
@@ -80,7 +85,7 @@ function WordCloud() {
         value: 6
       },
       {
-        text: "운동/스포츠",
+        text: "운동&스포츠",
         value: 19
       },
       {
