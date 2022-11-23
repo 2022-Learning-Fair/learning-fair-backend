@@ -138,17 +138,17 @@ function Project() {
           </button>
           <p id="ProjectHashtag">
             <span>#{project.current.hashtag_main}</span>
-            {project.current.hashtag_custom_a ? (
+            {project.current.hashtag_custom_a !== "-" ? (
               <span>#{project.current.hashtag_custom_a}</span>
             ) : (
               ""
             )}
-            {project.current.hashtag_custom_b ? (
+            {project.current.hashtag_custom_b !== "-" ? (
               <span>#{project.current.hashtag_custom_b}</span>
             ) : (
               ""
             )}
-            {project.current.hashtag_custom_c ? (
+            {project.current.hashtag_custom_c !== "-" ? (
               <span>#{project.current.hashtag_custom_c}</span>
             ) : (
               ""
