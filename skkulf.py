@@ -343,7 +343,7 @@ def like_project(pj_id):
     
     global session_duration_seconds
     if len(session_check_db_result) > 0 & cal_time_delta.seconds <= session_duration_seconds:
-        us_id = session_check_db_result[0][1]
+        us_id = session_check_db_result[0][0]
 
         likesql = f"""SELECT EXISTS(SELECT * FROM like_table
                     WHERE project_id = '{pj_id}' AND
@@ -352,10 +352,10 @@ def like_project(pj_id):
         with conn.cursor() as cur:
             cur.execute(likesql)
             like_button = cur.fetchall()
-            locals()['like_{}'.format(us_id)] = like_button[0][0]
+            like_button = like_button[0][0]
             conn.commit()
             
-        if 'like_{}'.format(us_id) == 0:
+        if like_button == False:
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt + 1
@@ -374,7 +374,6 @@ def like_project(pj_id):
                     team_name = '{project_info[0][1]}'
                     """
                     
-
             with conn.cursor() as cur:
                 cur.execute(likeup)
                 cur.execute(liketable)
