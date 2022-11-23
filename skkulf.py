@@ -355,10 +355,10 @@ def like_project(pj_id):
         with conn.cursor() as cur:
             cur.execute(likesql)
             like_button = cur.fetchall()
-            like_button = like_button[0][0]
+            globals()['like_{}'.format(us_id)] = like_button[0][0]
             conn.commit()
             
-        if like_button == 0:
+        if 'like_{}'.format(us_id) == 0:
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt + 1
@@ -377,6 +377,7 @@ def like_project(pj_id):
                     team_name = '{project_info[0][1]}'
                     """
                     
+
             with conn.cursor() as cur:
                 cur.execute(likeup)
                 cur.execute(liketable)
