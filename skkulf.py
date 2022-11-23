@@ -342,8 +342,7 @@ def like_project(pj_id):
     print(session_check_db_result[0][0])
     print(session_check_db_result[0][1])
 
-    if len(session_check_db_result) > 0:
-        cal_time_delta = datetime.datetime.now() - session_check_db_result[0][1]
+    cal_time_delta = datetime.datetime.now() - session_check_db_result[0][1]
     
     global session_duration_seconds
     if len(session_check_db_result) > 0 & cal_time_delta.seconds <= session_duration_seconds:
