@@ -76,13 +76,12 @@ function Project() {
         hashtag_custom_c: data.hashtag_custom_c,
 
         like_cnt: data.like_cnt
-      };   
+      };
       setLike(project.current.like_cnt);
     } catch (e) {
       console.log(e);
     }
   }
-  
   async function handleOnclick(loginCheckreqJson) {
     try {
       const response = await axios.post(
@@ -160,21 +159,26 @@ function Project() {
       <div className="ProjectContentWrapper">
         <div className="ProjectContent" id="ProjectYoutube">
           <p>YouTube</p>
-          {project.current.project_youtube_url !== '-' ? (
+          {project.current.project_youtube_url ? (
             <YouTube
-            className="ProjectYoutube"
-            videoId={project.current.project_youtube_url}
-            opts={{
-              width: youtube_w,
-              height: youtube_h,
-              playerVars: { autoplay: 1, rel: 0, modestbranding: 1 , start:1}              
-            }}
-            onEnd={(e) => {
-              e.target.stopVideo(0);
-            }}
-          />
-          ) : (<span>유튜브 영상이 존재하지 않습니다.</span>)}
-          
+              className="ProjectYoutube"
+              videoId={project.current.project_youtube_url}
+              opts={{
+                width: youtube_w,
+                height: youtube_h,
+                playerVars: { autoplay: 1, rel: 0, modestbranding: 1, start: 1 }
+              }}
+              onEnd={(e) => {
+                e.target.stopVideo(0);
+              }}
+            />
+          ) : (
+            <embed
+              className="ProjectPDF"
+              src={project.current.project_pdf_url}
+              type="application/pdf"
+            />
+          )}
         </div>
         <div className="ProjectContent" id="ProjectPDF">
           <p>PDF</p>
