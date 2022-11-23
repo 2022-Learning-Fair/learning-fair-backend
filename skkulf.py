@@ -355,7 +355,7 @@ def like_project(pj_id):
         with conn.cursor() as cur:
             cur.execute(likesql)
             like_button = cur.fetchall()
-            locals()['like_{}'.format(us_id)] = like_button[0][0]
+            globals()['like_{}'.format(us_id)] = like_button[0][0]
             conn.commit()
             
         if 'like_{}'.format(us_id) == 0:
