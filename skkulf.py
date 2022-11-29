@@ -333,7 +333,8 @@ def like_project(pj_id):
         cur.execute(sessionsql)
         session_check_db_result = cur.fetchall()
 
-    projectsql = f"""SELECT project_name, team_name FROM project WHERE project_id = '{pj_id}'"""
+    #projectsql = f"""SELECT project_name, team_name FROM project WHERE project_id = '{pj_id}'"""
+    projectsql = f"""SELECT class_name, team_number FROM project WHERE project_id = '{pj_id}'"""
 
     with conn.cursor() as cur:
         cur.execute(projectsql)
@@ -356,24 +357,40 @@ def like_project(pj_id):
             conn.commit()
             
         if like_button == False:
+            '''
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt + 1
                     WHERE project_name = '{project_info[0][0]}' and
                     team_name = '{project_info[0][1]}'
                     """
+            '''
+            likeup= f"""
+                    UPDATE project
+                    set like_cnt = like_cnt + 1
+                    WHERE class_name = '{project_info[0][0]}' and
+                    team_number = '{project_info[0][1]}'
+                    """
             liketable= f"""
                     INSERT into like_table
                     (user_id, project_id) VALUES
                     ('{us_id}', '{pj_id}')
                     """
+            '''
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
                     WHERE project_name = '{project_info[0][0]}' and
                     team_name = '{project_info[0][1]}'
                     """
-                    
+            '''
+            likecnts = f"""
+                    SELECT like_cnt
+                    FROM project
+                    WHERE class_name = '{project_info[0][0]}' and
+                    team_number = '{project_info[0][1]}'
+                    """
+
             with conn.cursor() as cur:
                 cur.execute(likeup)
                 cur.execute(liketable)
@@ -391,22 +408,38 @@ def like_project(pj_id):
             return jsonify(like_info_json)
         
         else :
+            '''
             likeup= f"""
                     UPDATE project
                     set like_cnt = like_cnt - 1
                     WHERE project_name = '{project_info[0][0]}' and
                     team_name = '{project_info[0][1]}'
                     """
+            '''
+            likeup= f"""
+                    UPDATE project
+                    set like_cnt = like_cnt - 1
+                    WHERE class_name = '{project_info[0][0]}' and
+                    team_number = '{project_info[0][1]}'
+                    """
             liketable= f"""
                     DELETE from like_table
                     WHERE user_id = '{us_id}'
                     AND project_id = '{pj_id}'
                     """
+            '''
             likecnts = f"""
                     SELECT like_cnt
                     FROM project
                     WHERE project_name = '{project_info[0][0]}' and
                     team_name = '{project_info[0][1]}'
+                    """
+            '''
+            likecnts = f"""
+                    SELECT like_cnt
+                    FROM project
+                    WHERE class_name = '{project_info[0][0]}' and
+                    team_number = '{project_info[0][1]}'
                     """
             with conn.cursor() as cur:
                 cur.execute(likeup)
