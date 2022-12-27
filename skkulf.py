@@ -26,7 +26,6 @@ session_duration_seconds = 86400
 @app.route('/')
 def index():
     if 'User_name' in session:
-        print("why!!")
         return jsonify({"state": "already_login"})
 
     return lfmodules.template(lfmodules.getContents(), '<h2>Welcome to 2022 Learning Fair</h2>')
